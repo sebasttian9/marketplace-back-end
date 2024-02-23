@@ -13,19 +13,18 @@
  *       type: object
  *       required:
  *         - nombre
- *         - apellido
  *         - email
  *         - password
  *       properties:
- *         id:
+ *         id_usuario:
  *           type: integer
  *           description: The auto-generated id of the users
+ *         perfil_id:
+ *           type: integer
+ *           description: The id that connects to its profile
  *         nombre:
  *           type: string
- *           description: The user's name
- *         apellido:
- *           type: string
- *           description: The user's last name
+ *           description: The user's full name
  *         email:
  *           type: string
  *           description: The user's email
@@ -40,10 +39,9 @@
  *           description: The date of the record's last update
  *
  *       example:
- *         nombre: The New Turing Omnibus
- *         apellido: Alexander K. Dewdney
- *         email: user@test.com
- *         password: password
+ *         nombre: John Dee
+ *         email: john@dee.com
+ *         password: strawberries123
  */
 
 /**
