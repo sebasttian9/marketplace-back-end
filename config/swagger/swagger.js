@@ -5,7 +5,7 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Inventario de productos API",
+      title: "Inventario de productos y pedidos API",
       version: "1.0.0",
       description: "API para el manejo de productos y usuarios",
     },
