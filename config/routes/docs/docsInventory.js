@@ -16,32 +16,37 @@
  *     Products:
  *       type: object
  *       required:
- *         - titulo
- *         - precio
- *         - imagen
+ *         - marca_id
+ *         - nombre
  *         - descripcion
- *         - categoria
+ *         - precio_lista
+ *         - stock
+ *         - usado
  *       properties:
- *         id:
+ *         id_producto:
  *           type: integer
  *           description: The auto-generated id of the users
- *         titulo:
+ *         marca_id:
+ *           type: integer
+ *           description: The brand's id
+ *         SKU:
+ *           type: string
+ *           description: stock keeping unit
+ *         nombre:
  *           type: string
  *           description: The item's name
- *         precio:
- *           type: integer
- *           description: The item's price
- *         imagen:
- *           type: string
- *           description: The item's image link
  *         descripcion:
- *           type: array
- *           items:
- *             type: string
- *           description: The item's description and key characteristics
- *         categoria:
  *           type: string
- *           description: The category that the item belongs to
+ *           description: The item's description and key characteristics
+ *         precio_lista:
+ *           type: integer
+ *           description: The item's price, stored in DOUBLE notation
+ *         stock:
+ *           type: integer
+ *           description: The item's current stock
+ *         usado:
+ *           type: integer
+ *           description: The item's state, new or used.
  *         createdAt:
  *           type: string
  *           description: The date of the record's creation
@@ -49,11 +54,12 @@
  *           type: string
  *           description: The date of the record's last update
  *       example:
- *         destino: "Llanta"
- *         presupuesto: 30000
- *         imagen: "https://jktornel.com.mx/wp-content/uploads/2022/06/IMG-BLOG-COMO-LEER-UNA-LLANTA.png"
- *         descripcion: ["Cantidad: 1","Modelo : Racer", "Año de manufactura: 2005"]
- *         categoria: "Ruedas"
+ *         marca_id: 2
+ *         nombre: "Llanta"
+ *         descripcion: "LLanta Marca XX. Fabricada el año 2012. Utilizada por el Rato McQueen"
+ *         precio_lista: 30000
+ *         stock: 3
+ *         usado: 1
  */
 
 /**
@@ -82,7 +88,7 @@
 
 /**
  * @swagger
- * /products/{id}:
+ * /products/{id_producto}:
  *   get:
  *     security:
  *       - BearerAuth: []
@@ -90,7 +96,7 @@
  *     tags: [Products]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: id_producto
  *         required: true
  *         schema:
  *           type: integer
@@ -142,13 +148,13 @@
 
 /**
  * @swagger
- * /products/{id}:
+ * /products/{id_producto}:
  *   put:
  *     summary: Actualizar un producto
  *     tags: [Products]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: id_producto
  *         required: true
  *         schema:
  *           type: integer
@@ -178,13 +184,13 @@
 
 /**
  * @swagger
- * /products/{id}:
+ * /products/{id_producto}:
  *   delete:
  *     summary: Eliminar un producto
  *     tags: [Products]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: id_producto
  *         required: true
  *         schema:
  *           type: integer
