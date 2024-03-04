@@ -15,4 +15,8 @@ const actionInterpreter = (base, action) => {
   }
 };
 
-export { findError, actionInterpreter };
+const getTax = (price) => {
+  return [price, price * 0.19, price * 1.19];
+};
+
+export { findError, actionInterpreter, getTax };
