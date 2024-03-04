@@ -53,4 +53,4 @@ const DeletePost = async (idPost) => {
   }
 };
 
-export { PostRegister, byUser, DeletePost };
+export { PostRegister, byUser, UpdatePostStatus, DeletePost };
