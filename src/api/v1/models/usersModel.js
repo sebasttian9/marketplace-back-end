@@ -1,14 +1,22 @@
-import pool from "../../../../config/db/connections.js";
+import pool from "../../../../config/db/conectionDb.js";
 import format from "pg-format";
 import bcrypt from "bcryptjs";
 
-const UserRegister = async (name, email, originalPassword, rol = "false") => {
+const UserRegister = async (email, pass, nombre, authSource, imagenAvatar) => {
   try {
-    const encryptPassword = bcrypt.hashSync(originalPassword);
-    const userValues = [name, email, encryptPassword, rol];
-    const userQuery =
-      "INSERT INTO tbl_usuarios (nombre,email,password,rol) values (DEFAULT, $1, $2, $3, $4) RETURNING *";
-    const response = await pool.query(userQuery, userValues);
+    // Validar si el Usuario ya existe en la BD
+    const passwordEncriptada = bcrypt.hashSync(pass);
+    pass = passwordEncriptada;
+    const values = [
+      nombre,
+      email,
+      passwordEncriptada,
+      authSource,
+      imagenAvatar,
+    ];
+    const consulta =
+      "INSERT INTO tbl_usuarios (id_usuario,nombre,email,password,authSource,avatar) values (DEFAULT, $1, $2, $3, $4, $5) RETURNING *";
+    const response = await pool.query(consulta, values);
 
     return response.rows[0];
   } catch (error) {
@@ -16,11 +24,11 @@ const UserRegister = async (name, email, originalPassword, rol = "false") => {
   }
 };
 
-const byEmail = async (email) => {
+const byEmail = async (email, authSource) => {
   try {
-    const byEmailQuery = {
-      text: "SELECT * FROM tbl_usuarios WHERE email = $1",
-      values: [email],
+    const SQLquery = {
+      text: "SELECT * FROM tbl_usuarios WHERE email = $1 AND authSource = $2",
+      values: [email, authSource],
     };
     const response = await pool.query(byEmailQuery);
     return response.rows[0];

@@ -9,13 +9,15 @@ CREATE DATABASE repuestos_automotriz;
 
 
 -- ************** creacion de tabla USUARIOS **************
-
+CREATE TYPE auth AS ENUM ('normal', 'google');
 CREATE TABLE tbl_usuarios ( 
 id_usuario serial PRIMARY KEY, 
 nombre varchar(200),
+avatar VARCHAR(255),
 email varchar(100) NOT NULL, 
 password varchar(100) NOT NULL,
-rol boolean NOT NULL, 
+authSource auth DEFAULT 'normal',
+isAdmin BOOLEAN DEFAULT false,
 created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
