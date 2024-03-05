@@ -15,12 +15,16 @@ swagger(app);
 app.use(express.json());
 app.options("*", cors());
 app.use(logger());
+app.get("/", (req,res)=>{
+  res.send('Api MARKETPLACE en linea');
+});
 app.use("/api/v1", usersRouter);
 
 
 app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`);
   console.log(`Swagger docs available at http://localhost:${PORT}/api/v1/docs`);
+  console.log(`Swagger production docs available at https://marketplace-back-end-4sb8.onrender.com/api/v1/docs`);
 });
 
 export default app;

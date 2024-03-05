@@ -11,7 +11,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:3000/api/v1",
+        url: "https://marketplace-back-end-4sb8.onrender.com/api/v1",
       },
     ],
   },
