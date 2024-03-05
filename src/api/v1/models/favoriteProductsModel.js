@@ -30,7 +30,7 @@ const DeleteWishlistItem = async (idWishlist) => {
   try {
     const deleteWishlistQuery =
       "DELETE FROM tbl_productos_favoritos WHERE id_prod_favorito = $1";
-    const response = await pool.query(deletePostQuery, idWishlist);
+    const response = await pool.query(deleteWishlistQuery, idWishlist);
     return response.rows[0];
   } catch (error) {
     console.log(error);

@@ -40,6 +40,15 @@ CREATE TABLE tbl_productos (
 	
 );
 
+-- INSERT PRODUCTOS
+
+INSERT INTO tbl_productos (sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values ('MR-100001','Champion','Bujia','Bujia hasta 60mil KM',7000,100,false);
+INSERT INTO tbl_productos (sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values ('MR-100002','Gates','Correa','Correa 7PK',10000,25,false);
+INSERT INTO tbl_productos (sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values ('MR-100003','Unipoint','Alternador','Alternador de 12 volts',120000,100,false);
+INSERT INTO tbl_productos (sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values ('MR-100004','HK','Filtro de aire','Filtro de aire premiun',5500,100,false);
+INSERT INTO tbl_productos (sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values ('MR-100005','Filtec','Filtro de Aceite','Filtro de aceite 12x10 mm',3506,100,false);
+INSERT INTO tbl_productos (sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values ('MR-100006','Chevron','Aceite','Aceite de motor 10/40',15000,100,false);
+
 -- ************** fin tabla PRODUCTOS **************
 
 -- ************** creacion de tabla PRODUCTOS FAVORITOS **************
