@@ -3,6 +3,7 @@ import cors from "cors";
 import { logger } from "logger-express";
 import swagger from "./config/swagger/swagger.js";
 import usersRouter from './config/routes/usersRoutes.js';
+import productsRouter from './config/routes/productsRoutes.js';
 
 
 /* Acá ir+an las rutas*/
@@ -19,6 +20,7 @@ app.get("/", (req,res)=>{
   res.send('Api MARKETPLACE en linea');
 });
 app.use("/api/v1", usersRouter);
+app.use("/api/v1", productsRouter);
 
 
 app.listen(PORT, () => {

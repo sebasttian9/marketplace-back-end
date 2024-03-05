@@ -32,6 +32,35 @@ const ProductRegister = async (
   }
 };
 
+
+// Get products
+
+const getProducts = async ( 
+  order_by = "nombre__ASC",
+  limits = 3,
+  page = 1
+  ) => {
+
+  try {
+
+    const [attribute, direction] = order_by.split("__");
+    const offset = (page -1) * limits;
+    const formattedQuery = format(
+      "SELECT * FROM tbl_productos ORDER BY %s %s LIMIT %s OFFSET %s",
+      attribute,
+      direction,
+      limits,
+      offset
+    );
+  
+    const response = await pool.query(formattedQuery);
+    return response.rows;
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const bySKU = async (SKU) => {
   try {
     const SKUQuery = "SELECT * FROM tbl_productos WHERE SKU = $1";
@@ -66,4 +95,4 @@ const DeleteProduct = async (SKU) => {
   }
 };
 
-export { ProductRegister, bySKU, UpdateProductStock, DeleteProduct };
+export { ProductRegister, bySKU, UpdateProductStock, DeleteProduct, getProducts };
