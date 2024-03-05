@@ -9,12 +9,15 @@ CREATE DATABASE repuestos_automotriz;
 
 
 -- ************** creacion de tabla USUARIOS **************
-
+CREATE TYPE auth AS ENUM ('normal', 'google');
 CREATE TABLE tbl_usuarios ( 
 id_usuario serial PRIMARY KEY, 
 nombre varchar(200),
+avatar VARCHAR(255),
 email varchar(100) NOT NULL, 
-password varchar(100) NOT NULL, 
+password varchar(100) NOT NULL,
+authSource auth DEFAULT 'normal',
+isAdmin BOOLEAN DEFAULT false,
 created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -26,14 +29,14 @@ updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 CREATE TABLE tbl_productos (
 	id_producto SERIAL PRIMARY KEY,
 	SKU varchar(100),
-marca_producto varchar(100),
+	marca_producto varchar(100),
 	nombre varchar(150),
 	descripcion varchar(255),
 	precio_lista integer, 
 	stock integer,
 	usado boolean,
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 	
 );
 
@@ -50,7 +53,7 @@ CREATE TABLE tbl_productos_favoritos (
 	CONSTRAINT fk_producto
       FOREIGN KEY(producto_id) 
         REFERENCES tbl_productos(id_producto),
-CONSTRAINT fk_usuario
+	CONSTRAINT fk_usuario
       FOREIGN KEY(usuario_id) 
         REFERENCES tbl_usuarios(id_usuario)
 );
@@ -69,7 +72,7 @@ CREATE TABLE tbl_productos_aplicacion (
 	agno_fin integer,
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-CONSTRAINT fk_prod_modelo
+	CONSTRAINT fk_prod_modelo
       FOREIGN KEY(producto_id) 
         REFERENCES tbl_productos(id_producto)
 );
@@ -142,13 +145,12 @@ CONSTRAINT fk_pedido_id
 
 
 -- ************** creacion de tabla PUBLICACIONES **************
-
 CREATE TABLE tbl_publicaciones(
 	id_publicacion SERIAL PRIMARY KEY NOT NULL,
 	usuario_id integer,
 	producto_id integer,
 	descripcion varchar(255),
-	estado integer,
+	isOnline boolean,
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 CONSTRAINT fk_publicacion_usuario
