@@ -4,12 +4,15 @@ const findError = (code) => {
   return ERRORS.filter((err) => err.code == code);
 };
 
-const stockActionInterpreter = (base, action) => {
+const stockActionInterpreter = (base, payload, action) => {
+  if (payload <= 0) {
+    throw new Error("Invalid payload to operate with the base");
+  }
   switch (action) {
     case "add":
-      return base + 1;
+      return base + payload;
     case "subt":
-      return base - 1;
+      return base - payload;
     default:
       throw new Error("Invalid action, try to use add or subt");
   }
@@ -40,4 +43,14 @@ const getTax = (price, quantity = 1) => {
   return [price * quantity, price * quantity * 0.19, price * quantity * 1.19];
 };
 
-export { findError, stockActionInterpreter, getTax, statusActionInterpreter };
+const getSKU = (title) => {
+  return title.toUpperCase().slice(0, 3) + Math.random().toString().slice(2, 8);
+};
+
+export {
+  findError,
+  stockActionInterpreter,
+  getTax,
+  statusActionInterpreter,
+  getSKU,
+};
