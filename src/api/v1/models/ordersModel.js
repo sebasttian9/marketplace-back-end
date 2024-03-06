@@ -1,33 +1,30 @@
-/* 
-
-HAY QUE MODIFICAR TODO DE ACUERDO A LA LÓGICA FINAL
-
 import pool from "../../../../config/db/conectionDb.js";
 import format from "pg-format";
 
+//Pedido mayor o general, que contiene los detalles
 const TotalOrderRegister = async (
-  SKU,
-  marca_producto,
-  nombre,
-  descripcion,
-  precio_lista,
-  stock,
-  usado
+  idUser,
+  orderNumber,
+  notes,
+  priceWithoutTaxes,
+  taxes,
+  priceWithTaxes,
+  status
 ) => {
   try {
     // Validar si el Producto ya existe en la BD
-    const productValues = [
-      SKU,
-      marca_producto,
-      nombre,
-      descripcion,
-      precio_lista,
-      stock,
-      usado,
+    const orderValues = [
+      idUser,
+      orderNumber,
+      notes,
+      priceWithoutTaxes,
+      taxes,
+      priceWithTaxes,
+      status,
     ];
-    const productQuery =
-      "INSERT INTO tbl_productos (id_producto,SKU,marca_producto,nombre,descripcion,precio_lista,stock,usado) values (DEFAULT, $1, $2, $3, $4, $5, $6, $7) RETURNING *";
-    const response = await pool.query(productQuery, productValues);
+    const orderQuery =
+      "INSERT INTO tbl_pedidos (id_pedido,usuario_id,numero_pedido,observaciones,neto,iva,total,estado) values (DEFAULT, $1, $2, $3, $4, $5, $6, $7) RETURNING *";
+    const response = await pool.query(orderQuery, orderValues);
 
     return response.rows[0];
   } catch (error) {
@@ -35,39 +32,55 @@ const TotalOrderRegister = async (
   }
 };
 
-const bySKU = async (SKU) => {
+const byOrderNumber = async (orderNumber) => {
   try {
-    const SKUQuery = "SELECT * FROM tbl_productos WHERE SKU = $1";
-    const response = await pool.query(SKUQuery, SKU);
+    const orderNumberQuery =
+      "SELECT * FROM tbl_pedidos WHERE numero_pedido = $1";
+    const response = await pool.query(orderNumberQuery, orderNumber);
     return response.rows[0];
   } catch (error) {
     console.log(error);
   }
 };
 
-const UpdateProductStock = async (SKU, stock, action) => {
+const byUserID = async (idUser) => {
   try {
-    const updatedStock = actionInterpreter(stock, action);
-    const updateProductValues = [updatedStock, SKU];
-    const updateStockQuery =
-      "UPDATE tbl_productos SET stock = $1 WHERE SKU = $2";
-    const response = await pool.query(updateStockQuery, updateProductValues);
+    const idUserQuery = "SELECT * FROM tbl_pedidos WHERE usuario_id = $1";
+    const response = await pool.query(idUserQuery, idUser);
     return response.rows[0];
   } catch (error) {
     console.log(error);
   }
 };
 
-const DeleteProduct = async (SKU) => {
+const UpdateOrderStatus = async (orderNumber, status, action) => {
+  try {
+    const updatedStatus = statusActionInterpreter(status, action);
+    const updateStatusValues = [updatedStatus, orderNumber];
+    const updateStatusQuery =
+      "UPDATE tbl_pedidos SET estado = $1 WHERE numero_pedido = $2";
+    const response = await pool.query(updateStatusQuery, updateStatusValues);
+    return response.rows[0];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const DeleteOrder = async (orderNumber) => {
   //Requiere una autorización previa en Controlador
   try {
-    const deleteProductQuery = "DELETE FROM tbl_productos WHERE SKU = $1";
-    const response = await pool.query(deleteProductQuery, SKU);
+    const deleteOrderQuery = "DELETE FROM tbl_pedidos WHERE numero_pedido = $1";
+    const response = await pool.query(deleteOrderQuery, orderNumber);
     return response.rows[0];
   } catch (error) {
     console.log(error);
   }
 };
 
-export { ProductRegister, bySKU, UpdateProductStock, DeleteProduct };
- */
+export {
+  TotalOrderRegister,
+  byOrderNumber,
+  byUserID,
+  UpdateOrderStatus,
+  DeleteOrder,
+};

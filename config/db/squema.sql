@@ -40,7 +40,7 @@ CREATE TABLE tbl_productos (
 	
 );
 
--- INSERT PRODUCTOS
+-- INSERT CONTENT FOR TBL_PRODUCTOS 
 
 INSERT INTO tbl_productos (sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values ('MR-100001','Champion','Bujia','Bujia hasta 60mil KM',7000,100,false);
 INSERT INTO tbl_productos (sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values ('MR-100002','Gates','Correa','Correa 7PK',10000,25,false);
@@ -49,7 +49,7 @@ INSERT INTO tbl_productos (sku,marca_producto,nombre,descripcion,precio_lista,st
 INSERT INTO tbl_productos (sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values ('MR-100005','Filtec','Filtro de Aceite','Filtro de aceite 12x10 mm',3506,100,false);
 INSERT INTO tbl_productos (sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values ('MR-100006','Chevron','Aceite','Aceite de motor 10/40',15000,100,false);
 
--- ************** fin tabla PRODUCTOS **************
+-- ************** END INSERT **************
 
 -- ************** creacion de tabla PRODUCTOS FAVORITOS **************
 
@@ -139,7 +139,6 @@ CREATE TABLE tbl_pedidos_detalle (
 	neto numeric,
 	iva numeric,
 	total numeric,
-	descuento numeric,
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 CONSTRAINT fk_pedido_id

@@ -32,19 +32,12 @@ const ProductRegister = async (
   }
 };
 
-
 // Get products
 
-const getProducts = async ( 
-  order_by = "nombre__ASC",
-  limits = 3,
-  page = 1
-  ) => {
-
+const getProducts = async (order_by = "nombre__ASC", limits = 3, page = 1) => {
   try {
-
     const [attribute, direction] = order_by.split("__");
-    const offset = (page -1) * limits;
+    const offset = (page - 1) * limits;
     const formattedQuery = format(
       "SELECT * FROM tbl_productos ORDER BY %s %s LIMIT %s OFFSET %s",
       attribute,
@@ -52,10 +45,9 @@ const getProducts = async (
       limits,
       offset
     );
-  
+
     const response = await pool.query(formattedQuery);
     return response.rows;
-
   } catch (error) {
     console.log(error);
   }
@@ -71,9 +63,40 @@ const bySKU = async (SKU) => {
   }
 };
 
-const UpdateProductStock = async (SKU, stock, action) => {
+const UpdateEntireProduct = async (
+  SKU,
+  brand,
+  title,
+  description,
+  price,
+  stock,
+  state
+) => {
   try {
-    const updatedStock = actionInterpreter(stock, action);
+    const updateEntireProductValues = [
+      brand,
+      title,
+      description,
+      price,
+      stock,
+      state,
+      SKU,
+    ];
+    const updateEntireProductQuery =
+      "UPDATE tbl_productos SET marca_producto = $1, nombre = $2, descripcion = $3, precio_lista = $4, stock = $5, usado = $6 WHERE SKU = $7";
+    const response = await pool.query(
+      updateEntireProductQuery,
+      updateEntireProductValues
+    );
+    return response.rows[0];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const UpdateProductStock = async (SKU, stock, payload, action) => {
+  try {
+    const updatedStock = actionInterpreter(stock, payload, action);
     const updateProductValues = [updatedStock, SKU];
     const updateStockQuery =
       "UPDATE tbl_productos SET stock = $1 WHERE SKU = $2";
@@ -95,4 +118,11 @@ const DeleteProduct = async (SKU) => {
   }
 };
 
-export { ProductRegister, bySKU, UpdateProductStock, DeleteProduct, getProducts };
+export {
+  ProductRegister,
+  bySKU,
+  UpdateProductStock,
+  DeleteProduct,
+  getProducts,
+  UpdateEntireProduct,
+};
