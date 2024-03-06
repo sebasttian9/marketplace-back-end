@@ -14,7 +14,10 @@ const PORT = process.env.PORT || 3000;
 
 swagger(app);
 app.use(express.json());
+// Add cors
+app.use(cors());
 app.options("*", cors());
+
 app.use(logger());
 app.get("/", (req,res)=>{
   res.send('Api MARKETPLACE en linea');
