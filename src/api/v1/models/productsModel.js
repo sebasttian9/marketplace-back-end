@@ -1,6 +1,6 @@
 import pool from "../../../../config/db/conectionDb.js";
 import format from "pg-format";
-import { actionInterpreter } from "../utils/utils.js";
+import { stockActionInterpreter } from "../utils/utils.js";
 
 const ProductRegister = async (
   SKU,
@@ -96,7 +96,7 @@ const UpdateEntireProduct = async (
 
 const UpdateProductStock = async (SKU, stock, payload, action) => {
   try {
-    const updatedStock = actionInterpreter(stock, payload, action);
+    const updatedStock = stockActionInterpreter(stock, payload, action);
     const updateProductValues = [updatedStock, SKU];
     const updateStockQuery =
       "UPDATE tbl_productos SET stock = $1 WHERE SKU = $2";
