@@ -6,14 +6,16 @@ import {
   updateProduct,
   deleteProductBySku,
 } from "../../src/api/v1/controllers/productsControllers.js";
+import { isLogin } from "../../src/api/v1/middlewares/validaToken.js";
+import { isTheSameAuthor } from "../../src/api/v1/middlewares/validateAuthor.js";
 
 const router = express.Router();
 
 router.get("/products", getAllProductsLimits);
 router.get("/products/:sku", getProductBySKU);
-router.post("/products", postNewProduct);
-//TO DO: Se necesita un middleware que valide si el usuario es el creador o no
-router.put("/products/:sku", updateProduct);
-router.delete("/products/:sku", deleteProductBySku);
+//TO DO: Revisar si funciona con el isLogin y el otro middleware
+router.post("/products", isLogin, postNewProduct);
+router.put("/products/:sku", isLogin, isTheSameAuthor, updateProduct);
+router.delete("/products/:sku", isLogin, isTheSameAuthor, deleteProductBySku);
 
 export default router;
