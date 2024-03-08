@@ -4,24 +4,16 @@ import { stockActionInterpreter } from "../utils/utils.js";
 
 const ProductRegister = async (
   SKU,
-  marca_producto,
-  nombre,
-  descripcion,
-  precio_lista,
+  brand,
+  title,
+  description,
+  price,
   stock,
-  usado
+  state
 ) => {
   try {
     // Validar si el Producto ya existe en la BD
-    const productValues = [
-      SKU,
-      marca_producto,
-      nombre,
-      descripcion,
-      precio_lista,
-      stock,
-      usado,
-    ];
+    const productValues = [SKU, brand, title, description, price, stock, state];
     const productQuery =
       "INSERT INTO tbl_productos (id_producto,SKU,marca_producto,nombre,descripcion,precio_lista,stock,usado) values (DEFAULT, $1, $2, $3, $4, $5, $6, $7) RETURNING *";
     const response = await pool.query(productQuery, productValues);
