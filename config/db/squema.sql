@@ -94,8 +94,6 @@ CREATE TABLE tbl_imagenes (
 	id_img SERIAL PRIMARY KEY NOT NULL, 
 	producto_id integer,
 	url varchar(255),
-	orden integer,
-	estado integer,
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT fk_prod_img
