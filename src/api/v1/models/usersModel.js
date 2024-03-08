@@ -33,7 +33,7 @@ const UpdateUser = async (userId, name, email, password, imageAvatar) => {
   try {
     const updateUserValues = [name, email, password, imageAvatar, userId];
     const updateUserQuery =
-      "UPDATE tbl_usuarios SET nombre = $1, email = $2, password = $3, avatar = $4 WHERE id_usuario = $5";
+      "UPDATE tbl_usuarios SET nombre = $1, email = $2, password = $3, avatar = $4 WHERE id_usuario = $5 RETURNING *";
     const response = await pool.query(updateUserQuery, updateUserValues);
     return response.rows[0];
   } catch (error) {
@@ -43,11 +43,17 @@ const UpdateUser = async (userId, name, email, password, imageAvatar) => {
 
 const byEmail = async (email, authSource) => {
   try {
-    const byEmailValues = [email, authSource];
-    const byEmailQuery =
-      "SELECT * FROM tbl_usuarios WHERE email = $1 AND authSource = $2";
-    const response = await pool.query(byEmailQuery, byEmailValues);
-    return response.rows[0];
+    if (authSource == false) {
+      const byEmailQuery = "SELECT * FROM tbl_usuarios WHERE email = $1";
+      const response = await pool.query(byEmailQuery, email);
+      return response.rows[0];
+    } else {
+      const byEmailValues = [email, authSource];
+      const byEmailQuery =
+        "SELECT * FROM tbl_usuarios WHERE email = $1 AND authSource = $2";
+      const response = await pool.query(byEmailQuery, byEmailValues);
+      return response.rows[0];
+    }
   } catch (error) {
     console.log(error);
   }
