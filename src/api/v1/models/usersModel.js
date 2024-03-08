@@ -43,11 +43,10 @@ const UpdateUser = async (userId, name, email, password, imageAvatar) => {
 
 const byEmail = async (email, authSource) => {
   try {
-    const SQLquery = {
-      text: "SELECT * FROM tbl_usuarios WHERE email = $1 AND authSource = $2",
-      values: [email, authSource],
-    };
-    const response = await pool.query(byEmailQuery);
+    const byEmailValues = [email, authSource];
+    const byEmailQuery =
+      "SELECT * FROM tbl_usuarios WHERE email = $1 AND authSource = $2";
+    const response = await pool.query(byEmailQuery, byEmailValues);
     return response.rows[0];
   } catch (error) {
     console.log(error);
