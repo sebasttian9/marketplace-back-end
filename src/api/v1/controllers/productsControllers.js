@@ -41,6 +41,30 @@ const postNewProduct = async (req, res) => {
   }
 };
 
+/** Formato Middleware
+const postNewProductMiddleware = async (req, res, next) => {
+  try {
+    const { brand, title, description, price, stock, state } = req.body;
+    const SKU = getSKU(title);
+    const newProduct = await ProductRegister(
+      SKU,
+      brand,
+      title,
+      description,
+      price,
+      stock,
+      state
+    );
+    // Pasar el objeto newProduct al siguiente controlador
+    req.newProduct = newProduct;
+    next(); // Llama al siguiente middleware o controlador
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+ */
 const getProductBySKU = async (req, res) => {
   try {
     //Tendría que ser onda "example.com/product/:sku" y sacamos el SKU por ahi
@@ -55,7 +79,8 @@ const getProductBySKU = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   try {
-    const { SKU, brand, title, description, price, stock, state } = req.body;
+    const { SKU } = req.params;
+    const { brand, title, description, price, stock, state } = req.body;
     const updatedProduct = await UpdateEntireProduct(
       SKU,
       brand,
