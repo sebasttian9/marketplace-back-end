@@ -59,4 +59,15 @@ const byEmail = async (email, authSource) => {
   }
 };
 
-export { UserRegister, byEmail };
+const userBySKU = async (SKU) => {
+  try {
+    const bySKUQuery =
+      "SELECT u.* FROM tbl_usuarios u INNER JOIN tbl_publicaciones pu ON u.id_usuario = pu.usuario_id INNER JOIN tbl_productos p ON pu.producto_id = p.id_producto WHERE p.sku = $1;";
+    const response = await pool.query(bySKUQuery, SKU);
+    return response.rows[0];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { UserRegister, byEmail, userBySKU };
