@@ -75,7 +75,7 @@ const UpdateEntireProduct = async (
       SKU,
     ];
     const updateEntireProductQuery =
-      "UPDATE tbl_productos SET marca_producto = $1, nombre = $2, descripcion = $3, precio_lista = $4, stock = $5, usado = $6 WHERE SKU = $7";
+      "UPDATE tbl_productos SET marca_producto = $1, nombre = $2, descripcion = $3, precio_lista = $4, stock = $5, usado = $6 WHERE SKU = $7 RETURNING *";
     const response = await pool.query(
       updateEntireProductQuery,
       updateEntireProductValues
