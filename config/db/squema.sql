@@ -1,12 +1,7 @@
--- ************** creacion de tabla viajes **************
--- Insertar aquí cuando se tenga listo
--- ************** fin tabla usuarios **************
-
-
 -- ************** creacion de BASE DE DATOS **************
 
 CREATE DATABASE repuestos_automotriz;
-
+\c
 
 -- ************** creacion de tabla USUARIOS **************
 CREATE TYPE auth AS ENUM ('normal', 'google');
