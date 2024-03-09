@@ -5,7 +5,6 @@ import {
   DeletePost,
 } from "../models/postsModel.js";
 import { byEmail } from "../models/usersModel.js";
-import jwt from "jsonwebtoken";
 
 //version Alpha, funcionaría con un middleware previo
 const postNewPost = async (req, res) => {
