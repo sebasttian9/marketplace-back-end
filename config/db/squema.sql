@@ -136,7 +136,8 @@ CREATE TABLE tbl_pedidos_detalle (
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 CONSTRAINT fk_pedido_id
                    FOREIGN KEY(pedido_id)
-		REFERENCES tbl_pedidos(id_pedido),
+		REFERENCES tbl_pedidos(id_pedido)
+		ON DELETE CASCADE,
 	CONSTRAINT fk_producto_pedido
                    FOREIGN KEY(producto_id)
 		REFERENCES tbl_productos(id_producto)
