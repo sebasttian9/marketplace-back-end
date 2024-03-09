@@ -3,28 +3,34 @@ import {
   PostsByUserEmail,
   UpdatePostStatus,
   DeletePost,
+  GetAllPostsWithFilters,
 } from "../models/postsModel.js";
 import { byEmail } from "../models/usersModel.js";
 
 const postNewPost = async (req, res) => {
   try {
-    //TO DO: Acá el middleware dejaría el elemento dentro del req
+    //Acá el middleware dejaría el elemento dentro del req
     const { id_producto } = req.newProduct;
-    //TO DO:Deberíamos tener el token presente dejado por un middleware previo
+    //Deberíamos tener el token presente dejado por un middleware previo
     const { email } = req.user;
     const { id_usuario } = await byEmail(email, false);
-    const newPost = await PostRegister(
-      id_usuario,
-      id_producto,
-      descriptionPost
-    );
+    const newPost = await PostRegister(id_usuario, id_producto);
     res.status(201).json(newPost);
   } catch (error) {
     console.log("error", error);
   }
 };
-//version Alpha
-//TO DO: Que los productos pausados cambien su vista en el Front End
+
+const getAllPosts = async (req, res) => {
+  try {
+    const { order_by, page, limits } = req.query;
+    const allPosts = await GetAllPostsWithFilters(order_by, limits, page);
+    const postsWithHateoas = await prepareHateoas("posts", allPosts);
+    res.status(200).json(postsWithHateoas);
+  } catch (error) {
+    console.log("error", error);
+  }
+};
 
 const getPostsByEmail = async (req, res) => {
   try {
@@ -37,11 +43,9 @@ const getPostsByEmail = async (req, res) => {
   }
 };
 
-//La función de este debe ser pausar el post
 //TO DO: Que los productos pausados cambien su vista en el Front End
 const updatePostStatus = async (req, res) => {
   try {
-    //Tendría que ser onda "example.com/product/:sku" y sacamos el SKU por ahi
     const { SKU } = req.params;
     const updatedPost = await UpdatePostStatus(SKU);
     res.status(201).json(updatedPost);
@@ -50,17 +54,21 @@ const updatePostStatus = async (req, res) => {
   }
 };
 
-//Debe estar validado que el usuario sea el creador
-const deletePost = async (req, res) => {
+const deletePostMiddleware = async (req, res, next) => {
   try {
-    //Tendría que ser onda "example.com/product/:sku" y sacamos el SKU por ahi
     const { SKU } = req.params;
     const postDeleted = await DeletePost(SKU);
-    //¿Coloco acá el producto del return?, ¿hace un return?, ¿coloco algo?
-    res.status(204).send();
+    next();
   } catch (error) {
     console.log("error", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
-export { postNewPost, getPostsByEmail, updatePostStatus, deletePost };
+export {
+  postNewPost,
+  getPostsByEmail,
+  updatePostStatus,
+  deletePostMiddleware,
+  getAllPosts,
+};

@@ -100,7 +100,6 @@ const UpdateProductStock = async (SKU, stock, payload, action) => {
 };
 
 const DeleteProduct = async (SKU) => {
-  //Requiere una autorización previa en Controlador
   try {
     const deleteProductQuery = "DELETE FROM tbl_productos WHERE SKU = $1";
     const response = await pool.query(deleteProductQuery, SKU);
