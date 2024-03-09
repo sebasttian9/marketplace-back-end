@@ -6,11 +6,8 @@ import {
 } from "../models/postsModel.js";
 import { byEmail } from "../models/usersModel.js";
 
-//version Alpha, funcionaría con un middleware previo
 const postNewPost = async (req, res) => {
   try {
-    //TO DO: Ver si dejamos al final este elemento
-    const { descriptionPost } = req.body;
     //TO DO: Acá el middleware dejaría el elemento dentro del req
     const { id_producto } = req.newProduct;
     //TO DO:Deberíamos tener el token presente dejado por un middleware previo

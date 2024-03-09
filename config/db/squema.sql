@@ -150,7 +150,6 @@ CREATE TABLE tbl_publicaciones(
 	id_publicacion SERIAL PRIMARY KEY NOT NULL,
 	usuario_id integer,
 	producto_id integer,
-	descripcion varchar(255),
 	isOnline boolean,
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
