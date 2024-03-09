@@ -18,9 +18,17 @@ const stockActionInterpreter = (base, payload, action) => {
   }
 };
 
-const statusActionInterpreter = (status, action) => {
+const statusOrderInterpreter = (status, action) => {
   statusArray = ["unavailable", "available", "purchased", "shipped"];
-  const actualStatusIndex = statusArray.findIndex((item) => item == status);
+  let actualStatusIndex;
+  try {
+    actualStatusIndex = statusArray.findIndex((item) => item === status);
+    if (actualStatusIndex === -1) {
+      throw new Error("Invalid status");
+    }
+  } catch (error) {
+    throw new Error("Invalid status");
+  }
   switch (action) {
     case "proceed":
       if (actualStatusIndex < 3) {
@@ -51,6 +59,6 @@ export {
   findError,
   stockActionInterpreter,
   getTax,
-  statusActionInterpreter,
+  statusOrderInterpreter,
   getSKU,
 };
