@@ -51,7 +51,7 @@ const getTotalOrderByUserId = async (req, res) => {
   }
 };
 
-//TO DO: Falta el controlador para obtener los elementos por detalle
+//TO DO: Falta el controlador para obtener los elementos por detalle, ¿se hará toda la lógica con SQL?
 
 //TO DO: Que los productos indiquen con un icono o color su estado
 const updateOrderStatus = async (req, res) => {
