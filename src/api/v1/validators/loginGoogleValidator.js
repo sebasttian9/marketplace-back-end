@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import { validationHelper } from "../src/helpers/validateHelper.js";
+import { validationHelper } from "../helpers/validateHelper.js";
 
 //TO DO: Revisar si funciona bien
 const validateLoginGoogle = [
