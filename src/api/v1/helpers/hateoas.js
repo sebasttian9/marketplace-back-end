@@ -3,7 +3,7 @@ const prepareHateoas = async (entity, data) => {
     const hateoasObject = {
       nombre: v.nombre,
       SKU: v.sku,
-      detalle: `/api/v1/${entity}/${v.sku}`,
+      detalle: v.descripcion,
       imagen: "crear join con tbl_imagenes",
       precio: v.precio_lista,
       stock: v.stock,
