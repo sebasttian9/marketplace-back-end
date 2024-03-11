@@ -1,12 +1,7 @@
--- ************** creacion de tabla viajes **************
--- Insertar aquí cuando se tenga listo
--- ************** fin tabla usuarios **************
-
-
 -- ************** creacion de BASE DE DATOS **************
 
 CREATE DATABASE repuestos_automotriz;
-
+\c
 
 -- ************** creacion de tabla USUARIOS **************
 CREATE TYPE auth AS ENUM ('normal', 'google');
@@ -94,8 +89,6 @@ CREATE TABLE tbl_imagenes (
 	id_img SERIAL PRIMARY KEY NOT NULL, 
 	producto_id integer,
 	url varchar(255),
-	orden integer,
-	estado integer,
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT fk_prod_img
@@ -143,7 +136,8 @@ CREATE TABLE tbl_pedidos_detalle (
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 CONSTRAINT fk_pedido_id
                    FOREIGN KEY(pedido_id)
-		REFERENCES tbl_pedidos(id_pedido),
+		REFERENCES tbl_pedidos(id_pedido)
+		ON DELETE CASCADE,
 	CONSTRAINT fk_producto_pedido
                    FOREIGN KEY(producto_id)
 		REFERENCES tbl_productos(id_producto)
@@ -157,7 +151,6 @@ CREATE TABLE tbl_publicaciones(
 	id_publicacion SERIAL PRIMARY KEY NOT NULL,
 	usuario_id integer,
 	producto_id integer,
-	descripcion varchar(255),
 	isOnline boolean,
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

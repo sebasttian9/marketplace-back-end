@@ -53,10 +53,9 @@ const byUserID = async (idUser) => {
   }
 };
 
-const UpdateOrderStatus = async (orderNumber, status, action) => {
+const UpdateOrderStatus = async (orderNumber, status) => {
   try {
-    const updatedStatus = statusActionInterpreter(status, action);
-    const updateStatusValues = [updatedStatus, orderNumber];
+    const updateStatusValues = [status, orderNumber];
     const updateStatusQuery =
       "UPDATE tbl_pedidos SET estado = $1 WHERE numero_pedido = $2";
     const response = await pool.query(updateStatusQuery, updateStatusValues);
