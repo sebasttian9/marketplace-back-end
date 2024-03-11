@@ -4,24 +4,16 @@ import { stockActionInterpreter } from "../utils/utils.js";
 
 const ProductRegister = async (
   SKU,
-  marca_producto,
-  nombre,
-  descripcion,
-  precio_lista,
+  brand,
+  title,
+  description,
+  price,
   stock,
-  usado
+  state
 ) => {
   try {
     // Validar si el Producto ya existe en la BD
-    const productValues = [
-      SKU,
-      marca_producto,
-      nombre,
-      descripcion,
-      precio_lista,
-      stock,
-      usado,
-    ];
+    const productValues = [SKU, brand, title, description, price, stock, state];
     const productQuery =
       "INSERT INTO tbl_productos (id_producto,SKU,marca_producto,nombre,descripcion,precio_lista,stock,usado) values (DEFAULT, $1, $2, $3, $4, $5, $6, $7) RETURNING *";
     const response = await pool.query(productQuery, productValues);
@@ -83,7 +75,7 @@ const UpdateEntireProduct = async (
       SKU,
     ];
     const updateEntireProductQuery =
-      "UPDATE tbl_productos SET marca_producto = $1, nombre = $2, descripcion = $3, precio_lista = $4, stock = $5, usado = $6 WHERE SKU = $7";
+      "UPDATE tbl_productos SET marca_producto = $1, nombre = $2, descripcion = $3, precio_lista = $4, stock = $5, usado = $6 WHERE SKU = $7 RETURNING *";
     const response = await pool.query(
       updateEntireProductQuery,
       updateEntireProductValues
@@ -108,7 +100,6 @@ const UpdateProductStock = async (SKU, stock, payload, action) => {
 };
 
 const DeleteProduct = async (SKU) => {
-  //Requiere una autorización previa en Controlador
   try {
     const deleteProductQuery = "DELETE FROM tbl_productos WHERE SKU = $1";
     const response = await pool.query(deleteProductQuery, SKU);
