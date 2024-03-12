@@ -11,8 +11,10 @@ describe("Operaciones CRUD de Products", () => {
 
         it("Should respond an array and at least 1 object", async () => {
             const response = await request(app).get("/api/v1/products");
-            expect(Array.isArray(response.body)).toBe(true);
-            expect(response.body[0]).toBeInstanceOf(Object);
+            const { results } = response.body;
+            console.log(results)
+            expect(Array.isArray(results)).toBe(true);
+            expect(results[0]).toBeInstanceOf(Object);
         });
     });
 
