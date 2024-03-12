@@ -9,7 +9,7 @@ import { getSKU } from "../utils/utils.js";
 import prepareHateoas from "../helpers/hateoas.js";
 
 const getAllProductsLimits = async (req, res) => {
-  console.log(req.query);
+  // console.log(req.query);
 
   try {
     const { order_by, page, limits } = req.query;
@@ -47,11 +47,13 @@ const getProductBySKU = async (req, res) => {
   try {
     const { sku } = req.params;
     const ProductFoundByID = await bySKU(sku);
-    if(ProductFoundByID){
-      res.status(200).json(ProductFoundByID);
+    if(!ProductFoundByID){
+      res.status(404).json({ "message" :" No existe el Producto!" });
+      return;  
     }
 
-    res.status(404).json({ "message" :" No existe el Producto!" });
+    
+    res.status(200).json(ProductFoundByID);
     
   } catch (error) {
     console.log("error", error);

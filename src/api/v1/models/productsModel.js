@@ -105,7 +105,7 @@ const DeleteProduct = async (SKU) => {
     const deleteProductQuery = "DELETE FROM tbl_productos WHERE SKU = $1";
     const productValues = [SKU];
     const response = await pool.query(deleteProductQuery, productValues);
-    console.log(response)
+    // console.log(response)
     return response.rows[0];
   } catch (error) {
     console.log(error);
