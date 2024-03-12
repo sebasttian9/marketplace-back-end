@@ -1,6 +1,8 @@
 import request from "supertest";
 import app from "../../app.js";
 
+// Para realizar testing comentar 'import { logger } from "logger-express";' en app.js
+
 describe("Products Controllers ", () => {
 
     describe("testing GET /products", () => {

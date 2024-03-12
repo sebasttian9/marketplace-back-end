@@ -31,7 +31,7 @@ const getProducts = async (order_by = "nombre__ASC", limits = 3, page = 1) => {
     const [attribute, direction] = order_by.split("__");
     const offset = (page - 1) * limits;
     const formattedQuery = format(
-      "SELECT * FROM tbl_productos ORDER BY %s %s LIMIT %s OFFSET %s",
+      "SELECT (select count(1) from tbl_productos) total_general, * FROM tbl_productos ORDER BY %s %s LIMIT %s OFFSET %s",
       attribute,
       direction,
       limits,

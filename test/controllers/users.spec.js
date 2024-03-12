@@ -2,6 +2,8 @@ import request from "supertest";
 import app from "../../app.js";
 import { faker } from '@faker-js/faker';
 
+// Para realizar testing comentar 'import { logger } from "logger-express";' en app.js
+
 describe("Users Controllers ", () => {
 
 
