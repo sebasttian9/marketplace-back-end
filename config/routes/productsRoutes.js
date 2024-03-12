@@ -3,6 +3,7 @@ import {
   getAllProductsLimits,
   getProductBySKU,
   updateProduct,
+  deleteProductBySku
 } from "../../src/api/v1/controllers/productsControllers.js";
 import { isLogin } from "../../src/api/v1/middlewares/validaToken.js";
 import { isTheSameAuthor } from "../../src/api/v1/middlewares/validateAuthor.js";
@@ -13,5 +14,6 @@ router.get("/products", getAllProductsLimits);
 //Parece ser que estas son las verdaderamente indispensables
 router.get("/products/:sku", getProductBySKU);
 router.put("/products/:sku", isLogin, isTheSameAuthor, updateProduct);
+router.delete("/products/:sku", deleteProductBySku);
 
 export default router;

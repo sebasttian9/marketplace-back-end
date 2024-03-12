@@ -45,9 +45,14 @@ const postNewProductMiddleware = async (req, res, next) => {
 
 const getProductBySKU = async (req, res) => {
   try {
-    const { SKU } = req.params;
-    const ProductFoundByID = await bySKU(SKU);
-    res.status(200).json(ProductFoundByID);
+    const { sku } = req.params;
+    const ProductFoundByID = await bySKU(sku);
+    if(ProductFoundByID){
+      res.status(200).json(ProductFoundByID);
+    }
+
+    res.status(404).json({ "message" :" No existe el Producto!" });
+    
   } catch (error) {
     console.log("error", error);
   }
@@ -74,8 +79,8 @@ const updateProduct = async (req, res) => {
 
 const deleteProductBySku = async (req, res) => {
   try {
-    const { SKU } = req.params;
-    const ProductDeleted = await DeleteProduct(SKU);
+    const { sku } = req.params;
+    const ProductDeleted = await DeleteProduct(sku);
     res.status(204).send();
   } catch (error) {
     console.log("error", error);

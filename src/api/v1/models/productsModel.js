@@ -48,7 +48,8 @@ const getProducts = async (order_by = "nombre__ASC", limits = 3, page = 1) => {
 const bySKU = async (SKU) => {
   try {
     const SKUQuery = "SELECT * FROM tbl_productos WHERE SKU = $1";
-    const response = await pool.query(SKUQuery, SKU);
+    const productValues = [SKU];
+    const response = await pool.query(SKUQuery, productValues);
     return response.rows[0];
   } catch (error) {
     console.log(error);
@@ -102,7 +103,9 @@ const UpdateProductStock = async (SKU, stock, payload, action) => {
 const DeleteProduct = async (SKU) => {
   try {
     const deleteProductQuery = "DELETE FROM tbl_productos WHERE SKU = $1";
-    const response = await pool.query(deleteProductQuery, SKU);
+    const productValues = [SKU];
+    const response = await pool.query(deleteProductQuery, productValues);
+    console.log(response)
     return response.rows[0];
   } catch (error) {
     console.log(error);
