@@ -5,6 +5,7 @@ const isLogin = async (req, res, next) => {
   try {
     validateHeaders(req, res);
     const token = req.header("Authorization").split(" ")[1];
+    // console.log(token)
     const tokenData = await validateToken(token);
     req.user = tokenData;
     next();

@@ -104,14 +104,14 @@ const loginGoogle = async (req, res) => {
 
       let id_usuario2 = newUser.id_usuario;
           // se crea el token de acceso
-     token = jwt.sign({ email,id_usuario2 }, process.env.JWT_SECRET, {
+     token = jwt.sign({ email,"id_usuario":id_usuario2 }, process.env.JWT_SECRET, {
       expiresIn: "2h",
     });
 
     }else{
 
                 // se crea el token de acceso
-     token = jwt.sign({ email,id_usuario1 }, process.env.JWT_SECRET, {
+     token = jwt.sign({ email,"id_usuario":id_usuario1 }, process.env.JWT_SECRET, {
       expiresIn: "2h",
     });
     }

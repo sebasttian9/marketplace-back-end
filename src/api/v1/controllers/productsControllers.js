@@ -23,6 +23,8 @@ const getAllProductsLimits = async (req, res) => {
 
 const postNewProduct = async (req, res) => {
   try {
+
+    const { id_usuario } = req.user;
     const { brand, title, description, price, stock, state } = req.body;
     const SKU = getSKU(title);
     const newProduct = await ProductRegister(
@@ -32,7 +34,8 @@ const postNewProduct = async (req, res) => {
       description,
       price,
       stock,
-      state
+      state,
+      id_usuario
     );
     // Pasar el objeto newProduct al siguiente controlador
     // req.newProduct = newProduct;
