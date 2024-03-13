@@ -90,7 +90,6 @@ const loginGoogle = async (req, res) => {
 
     // Check if the user exists in your database
     let user = await byEmail(email, "google");
-    let id_usuario1 = user.id_usuario;
     let token = '';
     if (!user) {
       // Create a user if they do not exist
@@ -110,6 +109,7 @@ const loginGoogle = async (req, res) => {
 
     }else{
 
+      let id_usuario1 = user.id_usuario;
                 // se crea el token de acceso
      token = jwt.sign({ email,"id_usuario":id_usuario1 }, process.env.JWT_SECRET, {
       expiresIn: "2h",
