@@ -75,12 +75,12 @@ const login = async (req, res) => {
 const loginGoogle = async (req, res) => {
   const client = new OAuth2Client();
 
-  const { credential, client_id } = req.body;
+  const { credential, clientId } = req.body;
 
   try {
     const ticket = await client.verifyIdToken({
       idToken: credential,
-      audience: client_id,
+      audience: clientId,
     });
     const payload = ticket.getPayload();
     const email = payload["email"];
