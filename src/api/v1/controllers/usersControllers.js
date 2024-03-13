@@ -54,8 +54,8 @@ const login = async (req, res) => {
           .status(errorFound[0].status)
           .json({ message: errorFound[0].message });
       } else {
-        const { email, nombre, avatar } = findUser;
-        const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+        const { email, nombre, id_usuario } = findUser;
+        const token = jwt.sign({ email,id_usuario }, process.env.JWT_SECRET, {
           expiresIn: "1h",
         });
         res.status(200).json({
@@ -90,6 +90,8 @@ const loginGoogle = async (req, res) => {
 
     // Check if the user exists in your database
     let user = await byEmail(email, "google");
+    let id_usuario1 = user.id_usuario;
+    let token = '';
     if (!user) {
       // Create a user if they do not exist
       const newUser = await UserRegister(
@@ -99,12 +101,22 @@ const loginGoogle = async (req, res) => {
         "google",
         imagen
       );
+
+      let id_usuario2 = newUser.id_usuario;
+          // se crea el token de acceso
+     token = jwt.sign({ email,id_usuario2 }, process.env.JWT_SECRET, {
+      expiresIn: "2h",
+    });
+
+    }else{
+
+                // se crea el token de acceso
+     token = jwt.sign({ email,id_usuario1 }, process.env.JWT_SECRET, {
+      expiresIn: "2h",
+    });
     }
 
-    // se crea el token de acceso
-    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+
 
     // res.status(200).json({ payload, "token": token });
     res.status(200).cookie("token", token, { http: true }).json({ payload });

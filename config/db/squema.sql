@@ -23,6 +23,7 @@ updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 
 CREATE TABLE tbl_productos (
 	id_producto SERIAL PRIMARY KEY,
+	usuario_id integer,
 	SKU varchar(100),
 	marca_producto varchar(100),
 	nombre varchar(150),
@@ -31,7 +32,10 @@ CREATE TABLE tbl_productos (
 	stock integer,
 	usado boolean,
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		CONSTRAINT fk_usuario_prod
+      FOREIGN KEY(usuario_id) 
+        REFERENCES tbl_usuarios(id_usuario)
 	
 );
 
@@ -147,20 +151,20 @@ CONSTRAINT fk_pedido_id
 
 
 -- ************** creacion de tabla PUBLICACIONES **************
-CREATE TABLE tbl_publicaciones(
-	id_publicacion SERIAL PRIMARY KEY NOT NULL,
-	usuario_id integer,
-	producto_id integer,
-	isOnline boolean,
-	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-CONSTRAINT fk_publicacion_usuario
-                   FOREIGN KEY(usuario_id)
-		REFERENCES tbl_usuarios(id_usuario),
-	CONSTRAINT fk_productos_publicacion
-                   FOREIGN KEY(producto_id)
-		REFERENCES tbl_productos(id_producto)
-);
+-- CREATE TABLE tbl_publicaciones(
+-- 	id_publicacion SERIAL PRIMARY KEY NOT NULL,
+-- 	usuario_id integer,
+-- 	producto_id integer,
+-- 	isOnline boolean,
+-- 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+-- 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+-- CONSTRAINT fk_publicacion_usuario
+--                    FOREIGN KEY(usuario_id)
+-- 		REFERENCES tbl_usuarios(id_usuario),
+-- 	CONSTRAINT fk_productos_publicacion
+--                    FOREIGN KEY(producto_id)
+-- 		REFERENCES tbl_productos(id_producto)
+-- );
 
 
 -- ************** fin tabla PUBLICACIONES **************
