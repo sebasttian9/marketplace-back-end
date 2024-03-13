@@ -21,7 +21,7 @@ const getAllProductsLimits = async (req, res) => {
   }
 };
 
-const postNewProductMiddleware = async (req, res, next) => {
+const postNewProduct = async (req, res) => {
   try {
     const { brand, title, description, price, stock, state } = req.body;
     const SKU = getSKU(title);
@@ -35,8 +35,9 @@ const postNewProductMiddleware = async (req, res, next) => {
       state
     );
     // Pasar el objeto newProduct al siguiente controlador
-    req.newProduct = newProduct;
-    next(); // Llama al siguiente middleware o controlador
+    // req.newProduct = newProduct;
+    // next(); // Llama al siguiente middleware o controlador
+    res.status(201).json({ product: newProduct });
   } catch (error) {
     console.log("error", error);
     res.status(500).json({ error: "Internal server error" });
@@ -91,7 +92,7 @@ const deleteProductBySku = async (req, res) => {
 
 export {
   getAllProductsLimits,
-  postNewProductMiddleware,
+  postNewProduct,
   getProductBySKU,
   updateProduct,
   deleteProductBySku,
