@@ -118,8 +118,8 @@ const loginGoogle = async (req, res) => {
 
 
 
-    // res.status(200).json({ payload, "token": token });
-    res.status(200).cookie("token", token, { http: true }).json({ payload });
+    res.status(200).json({ payload, "token": token });
+    // res.status(200).cookie("token", token, { http: true }).json({ payload });
   } catch (err) {
     console.log(err);
     res.status(500).json({ err });
