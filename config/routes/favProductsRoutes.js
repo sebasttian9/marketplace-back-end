@@ -9,13 +9,8 @@ import { isTheSameAuthor } from "../../src/api/v1/middlewares/validateAuthor.js"
 
 const router = express.Router();
 
-router.get("/user/myfavproducts", isLogin, getFavProductsByUser);
-router.post("/user/myfavsproducts/:sku", isLogin, postNewFavProd);
-router.delete(
-  "/user/myfavsproducts/:sku",
-  isLogin,
-  isTheSameAuthor,
-  deleteFavProduct
-);
+router.get("/user/myfavsproducts", isLogin, getFavProductsByUser);
+router.post("/user/myfavsproducts", isLogin, postNewFavProd);
+router.delete("/user/myfavsproducts/:id",isLogin, deleteFavProduct);
 
 export default router;

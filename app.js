@@ -4,6 +4,7 @@ import { logger } from "logger-express";
 import swagger from "./config/swagger/swagger.js";
 import usersRouter from './config/routes/usersRoutes.js';
 import productsRouter from './config/routes/productsRoutes.js';
+import favProductsRoutes from './config/routes/favProductsRoutes.js';
 
 
 /* Acá ir+an las rutas*/
@@ -23,6 +24,7 @@ app.get("/", (req,res)=>{
 });
 app.use("/api/v1", usersRouter);
 app.use("/api/v1", productsRouter);
+app.use("/api/v1", favProductsRoutes);
 
 
 

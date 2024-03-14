@@ -1,6 +1,6 @@
 import {
   WishlistRegister,
-  byEmailInWishlist,
+  byIdUsuarioInWishlist,
   DeleteWishlistItem,
 } from "../models/favoriteProductsModel.js";
 import { bySKU } from "../models/productsModel.js";
@@ -9,11 +9,11 @@ import { bySKU } from "../models/productsModel.js";
 const postNewFavProd = async (req, res) => {
   try {
     //TO DO: Hay que tener el SKU, asumo que por params
-    const { SKU } = req.params;
-    const { id_producto } = bySKU(SKU);
+    const { id_producto } = req.body;
+    // const { id_producto } = bySKU(SKU);
     //TO DO:Deberíamos tener el token presente dejado por un middleware previo
-    const { email } = req.user;
-    const { id_usuario } = await byEmail(email, false);
+    const { id_usuario } = req.user;
+    // const { id_usuario } = await byEmail(email, false);
     const newFavProd = await WishlistRegister(id_producto, id_usuario);
     res.status(201).json(newFavProd);
   } catch (error) {
@@ -24,9 +24,15 @@ const postNewFavProd = async (req, res) => {
 const getFavProductsByUser = async (req, res) => {
   try {
     //TO DO:Deberíamos tener el token presente dejado por un middleware previo
-    const { email } = req.user;
-    const favProductsByUser = await byEmailInWishlist(email);
-    res.status(200).json(favProductsByUser);
+    const { id_usuario } = req.user;
+    const favProductsByUser = await byIdUsuarioInWishlist(id_usuario);
+    // console.log(favProductsByUser)
+    if(favProductsByUser){
+      res.status(200).json({"Products":favProductsByUser});
+    }else{
+      res.status(200).json({"Products":[]});
+    }
+    
   } catch (error) {
     console.log("error", error);
   }
@@ -36,9 +42,15 @@ const getFavProductsByUser = async (req, res) => {
 const deleteFavProduct = async (req, res) => {
   try {
     //Tendría que ser onda "example.com/product/:sku" y sacamos el SKU por ahi
-    const { SKU } = req.params;
-    const postDeleted = await DeleteWishlistItem(SKU);
-    res.status(204).send();
+    const { id } = req.params;
+    const postDeleted = await DeleteWishlistItem(id);
+    // console.log(postDeleted.rowCount)
+    if(postDeleted.rowCount){
+      res.status(200).json({"message":"Producto favorito Eliminado"});
+    }else{
+      res.status(200).json({"message":"No se pudo eliminar el producto de favoritos"});
+    }
+    
   } catch (error) {
     console.log("error", error);
   }
