@@ -23,6 +23,7 @@ updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 
 CREATE TABLE tbl_productos (
 	id_producto SERIAL PRIMARY KEY,
+	usuario_id integer,
 	SKU varchar(100),
 	marca_producto varchar(100),
 	nombre varchar(150),
@@ -31,18 +32,21 @@ CREATE TABLE tbl_productos (
 	stock integer,
 	usado boolean,
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		CONSTRAINT fk_usuario_prod
+      FOREIGN KEY(usuario_id) 
+        REFERENCES tbl_usuarios(id_usuario)
 	
 );
 
 -- INSERT CONTENT FOR TBL_PRODUCTOS 
 
-INSERT INTO tbl_productos (sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values ('MR-100001','Champion','Bujia','Bujia hasta 60mil KM',7000,100,false);
-INSERT INTO tbl_productos (sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values ('MR-100002','Gates','Correa','Correa 7PK',10000,25,false);
-INSERT INTO tbl_productos (sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values ('MR-100003','Unipoint','Alternador','Alternador de 12 volts',120000,100,false);
-INSERT INTO tbl_productos (sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values ('MR-100004','HK','Filtro de aire','Filtro de aire premiun',5500,100,false);
-INSERT INTO tbl_productos (sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values ('MR-100005','Filtec','Filtro de Aceite','Filtro de aceite 12x10 mm',3506,100,false);
-INSERT INTO tbl_productos (sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values ('MR-100006','Chevron','Aceite','Aceite de motor 10/40',15000,100,false);
+INSERT INTO tbl_productos (usuario_id,sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values (1,'MR-100001','Champion','Bujia','Bujia hasta 60mil KM',7000,100,false);
+INSERT INTO tbl_productos (usuario_id,sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values (1,'MR-100002','Gates','Correa','Correa 7PK',10000,25,false);
+INSERT INTO tbl_productos (usuario_id,sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values (1,'MR-100003','Unipoint','Alternador','Alternador de 12 volts',120000,100,false);
+INSERT INTO tbl_productos (usuario_id,sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values (1,'MR-100004','HK','Filtro de aire','Filtro de aire premiun',5500,100,false);
+INSERT INTO tbl_productos (usuario_id,sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values (1,'MR-100005','Filtec','Filtro de Aceite','Filtro de aceite 12x10 mm',3506,100,false);
+INSERT INTO tbl_productos (usuario_id,sku,marca_producto,nombre,descripcion,precio_lista,stock,usado) values (1,'MR-100006','Chevron','Aceite','Aceite de motor 10/40',15000,100,false);
 
 -- ************** END INSERT **************
 
@@ -147,20 +151,20 @@ CONSTRAINT fk_pedido_id
 
 
 -- ************** creacion de tabla PUBLICACIONES **************
-CREATE TABLE tbl_publicaciones(
-	id_publicacion SERIAL PRIMARY KEY NOT NULL,
-	usuario_id integer,
-	producto_id integer,
-	isOnline boolean,
-	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-CONSTRAINT fk_publicacion_usuario
-                   FOREIGN KEY(usuario_id)
-		REFERENCES tbl_usuarios(id_usuario),
-	CONSTRAINT fk_productos_publicacion
-                   FOREIGN KEY(producto_id)
-		REFERENCES tbl_productos(id_producto)
-);
+-- CREATE TABLE tbl_publicaciones(
+-- 	id_publicacion SERIAL PRIMARY KEY NOT NULL,
+-- 	usuario_id integer,
+-- 	producto_id integer,
+-- 	isOnline boolean,
+-- 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+-- 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+-- CONSTRAINT fk_publicacion_usuario
+--                    FOREIGN KEY(usuario_id)
+-- 		REFERENCES tbl_usuarios(id_usuario),
+-- 	CONSTRAINT fk_productos_publicacion
+--                    FOREIGN KEY(producto_id)
+-- 		REFERENCES tbl_productos(id_producto)
+-- );
 
 
 -- ************** fin tabla PUBLICACIONES **************
