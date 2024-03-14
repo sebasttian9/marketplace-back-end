@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import { validationHelper }  from "../helpers/validateHelper.js";
+import { validationHelper } from "../helpers/validateHelper.js";
 
 const validateLogin = [
   body("email").exists().notEmpty().isEmail(),
