@@ -54,8 +54,8 @@ const login = async (req, res) => {
           .status(errorFound[0].status)
           .json({ message: errorFound[0].message });
       } else {
-        const { email, nombre, avatar } = findUser;
-        const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+        const { email, nombre, id_usuario } = findUser;
+        const token = jwt.sign({ email,id_usuario }, process.env.JWT_SECRET, {
           expiresIn: "1h",
         });
         res.status(200).json({
@@ -75,12 +75,12 @@ const login = async (req, res) => {
 const loginGoogle = async (req, res) => {
   const client = new OAuth2Client();
 
-  const { credential, client_id } = req.body;
+  const { credential, clientId } = req.body;
 
   try {
     const ticket = await client.verifyIdToken({
       idToken: credential,
-      audience: client_id,
+      audience: clientId,
     });
     const payload = ticket.getPayload();
     const email = payload["email"];
@@ -90,6 +90,7 @@ const loginGoogle = async (req, res) => {
 
     // Check if the user exists in your database
     let user = await byEmail(email, "google");
+    let token = '';
     if (!user) {
       // Create a user if they do not exist
       const newUser = await UserRegister(
@@ -99,15 +100,26 @@ const loginGoogle = async (req, res) => {
         "google",
         imagen
       );
-    }
 
-    // se crea el token de acceso
-    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      let id_usuario2 = newUser.id_usuario;
+          // se crea el token de acceso
+     token = jwt.sign({ email,"id_usuario":id_usuario2 }, process.env.JWT_SECRET, {
+      expiresIn: "2h",
     });
 
-    // res.status(200).json({ payload, "token": token });
-    res.status(200).cookie("token", token, { http: true }).json({ payload });
+    }else{
+
+      let id_usuario1 = user.id_usuario;
+                // se crea el token de acceso
+     token = jwt.sign({ email,"id_usuario":id_usuario1 }, process.env.JWT_SECRET, {
+      expiresIn: "2h",
+    });
+    }
+
+
+
+    res.status(200).json({ payload, "token": token });
+    // res.status(200).cookie("token", token, { http: true }).json({ payload });
   } catch (err) {
     console.log(err);
     res.status(500).json({ err });

@@ -1,4 +1,5 @@
 const prepareHateoas = async (entity, data) => {
+  let total_general = 0;
   const results = data.map((v) => {
     const hateoasObject = {
       nombre: v.nombre,
@@ -9,6 +10,7 @@ const prepareHateoas = async (entity, data) => {
       stock: v.stock,
       marca: v.marca_producto,
       usado: v.usado,
+      descripcion: v.descripcion
     };
 
     // Agregar vendedor solo si está presente
@@ -16,11 +18,14 @@ const prepareHateoas = async (entity, data) => {
       hateoasObject.vendedor = v.nombre_vendedor;
     }
 
+    total_general = parseInt(v.total_general);
+
     return hateoasObject;
   });
 
   const total = data.length;
   const HATEOAS = {
+    total_general,
     total,
     results,
   };

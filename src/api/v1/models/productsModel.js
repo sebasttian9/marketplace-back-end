@@ -9,13 +9,14 @@ const ProductRegister = async (
   description,
   price,
   stock,
-  state
+  state,
+  id_usuario
 ) => {
   try {
     // Validar si el Producto ya existe en la BD
-    const productValues = [SKU, brand, title, description, price, stock, state];
+    const productValues = [SKU, brand, title, description, price, stock, state,id_usuario];
     const productQuery =
-      "INSERT INTO tbl_productos (id_producto,SKU,marca_producto,nombre,descripcion,precio_lista,stock,usado) values (DEFAULT, $1, $2, $3, $4, $5, $6, $7) RETURNING *";
+      "INSERT INTO tbl_productos (id_producto,SKU,marca_producto,nombre,descripcion,precio_lista,stock,usado,usuario_id) values (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8) RETURNING *";
     const response = await pool.query(productQuery, productValues);
 
     return response.rows[0];
@@ -31,7 +32,7 @@ const getProducts = async (order_by = "nombre__ASC", limits = 3, page = 1) => {
     const [attribute, direction] = order_by.split("__");
     const offset = (page - 1) * limits;
     const formattedQuery = format(
-      "SELECT * FROM tbl_productos ORDER BY %s %s LIMIT %s OFFSET %s",
+      "SELECT (select count(1) from tbl_productos) total_general, * FROM tbl_productos ORDER BY %s %s LIMIT %s OFFSET %s",
       attribute,
       direction,
       limits,
@@ -48,7 +49,8 @@ const getProducts = async (order_by = "nombre__ASC", limits = 3, page = 1) => {
 const bySKU = async (SKU) => {
   try {
     const SKUQuery = "SELECT * FROM tbl_productos WHERE SKU = $1";
-    const response = await pool.query(SKUQuery, SKU);
+    const productValues = [SKU];
+    const response = await pool.query(SKUQuery, productValues);
     return response.rows[0];
   } catch (error) {
     console.log(error);
@@ -102,7 +104,9 @@ const UpdateProductStock = async (SKU, stock, payload, action) => {
 const DeleteProduct = async (SKU) => {
   try {
     const deleteProductQuery = "DELETE FROM tbl_productos WHERE SKU = $1";
-    const response = await pool.query(deleteProductQuery, SKU);
+    const productValues = [SKU];
+    const response = await pool.query(deleteProductQuery, productValues);
+    // console.log(response)
     return response.rows[0];
   } catch (error) {
     console.log(error);
