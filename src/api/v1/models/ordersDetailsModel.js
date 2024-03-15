@@ -25,7 +25,8 @@ const byTotalOrderNumberInDetail = async (totalOrderNumber) => {
   try {
     const TotalOrderNumberQuery =
       "SELECT * FROM tbl_pedidos_detalle WHERE pedido_id = $1";
-    const response = await pool.query(TotalOrderNumberQuery, totalOrderNumber);
+      const detailsValues = [totalOrderNumber];
+    const response = await pool.query(TotalOrderNumberQuery, detailsValues);
     return response.rows[0];
   } catch (error) {
     console.log(error);
@@ -77,12 +78,13 @@ const UpdateOrderDetailQuantity = async (orderId, quantity) => {
   }
 };
 
-const DeleteOrderDetail = async (orderId) => {
+const DeleteOrderDet = async (orderId) => {
   //Requiere una autorización previa en Controlador
   try {
     const deleteOrderDetailQuery =
       "DELETE FROM tbl_pedidos_detalle WHERE id_detalle = $1";
-    const response = await pool.query(deleteOrderDetailQuery, orderId);
+      const values = [orderId];
+    const response = await pool.query(deleteOrderDetailQuery, values);
     return response.rows[0];
   } catch (error) {
     console.log(error);
@@ -95,5 +97,5 @@ export {
   byTotalOrderNumberInDetail,
   byOrderDetailId,
   UpdateOrderDetailQuantity,
-  DeleteOrderDetail,
+  DeleteOrderDet,
 };

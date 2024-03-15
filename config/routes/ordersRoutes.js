@@ -20,12 +20,7 @@ router.get("/user/orders", isLogin, getTotalOrderByUserId);
 El boton debe ser parseado en mente con la dirección del get con el id tipo ${id_pedido}*/
 router.get("/user/orders/:orderId", isLogin, getAllOrderDetailsByOrderID);
 //El Details está totalmente en Alpha, debería funcionar tanto para hacer update como crear un nuevo producto
-router.post(
-  "/user/orders",
-  isLogin,
-  postNewTotalOrderMiddleware,
-  postSingleOrderDetail
-);
+router.post("/user/orders",isLogin,postNewTotalOrderMiddleware,postSingleOrderDetail);
 //Cambiar el estado de la orden: está en carrito, se cancela, se paga, etc.
 router.put("/user/orders/status/:orderNumber", isLogin, updateOrderStatus);
 //Cambiar la cantidad del detalle

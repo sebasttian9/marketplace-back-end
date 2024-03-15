@@ -30,7 +30,8 @@ const byOrderNumber = async (orderNumber) => {
 const byUserID = async (idUser) => {
   try {
     const idUserQuery = "SELECT * FROM tbl_pedidos WHERE usuario_id = $1";
-    const response = await pool.query(idUserQuery, idUser);
+    const queryParams = [idUser];
+    const response = await pool.query(idUserQuery, queryParams);
     return response.rows[0];
   } catch (error) {
     console.log(error);
@@ -53,7 +54,8 @@ const DeleteOrder = async (orderNumber) => {
   //Requiere una autorización previa en Controlador
   try {
     const deleteOrderQuery = "DELETE FROM tbl_pedidos WHERE numero_pedido = $1";
-    const response = await pool.query(deleteOrderQuery, orderNumber);
+    const values = [orderNumber];
+    const response = await pool.query(deleteOrderQuery, values);
     return response.rows[0];
   } catch (error) {
     console.log(error);

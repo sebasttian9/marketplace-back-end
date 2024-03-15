@@ -3,7 +3,6 @@ import {
   byIdUsuarioInWishlist,
   DeleteWishlistItem,
 } from "../models/favoriteProductsModel.js";
-import { bySKU } from "../models/productsModel.js";
 
 //version Alpha, funcionaría con un middleware previo
 const postNewFavProd = async (req, res) => {

@@ -4,6 +4,7 @@ import {
   byProductIdInDetail,
   byOrderDetailId,
   UpdateOrderDetailQuantity,
+  DeleteOrderDet
 } from "../models/ordersDetailsModel.js";
 import { stockActionInterpreter } from "../utils/utils.js";
 
@@ -15,7 +16,7 @@ const postSingleOrderDetail = async (req, res) => {
     //Chequear si existe
     const existentDetail = await byProductIdInDetail(id_producto, id_pedido);
     //Si no existe, crear
-    if (existentDetail == null) {
+    if (!existentDetail) {
       let base = 0;
       const stock = stockActionInterpreter(base, quantity, action);
       const newDetail = await DetailOrderRegister(
@@ -65,7 +66,7 @@ const updateOrderDetail = async (req, res) => {
 const deleteOrderDetail = async (req, res) => {
   try {
     const { idDetail } = req.params;
-    const postDeleted = await DeleteOrder(idDetail);
+    const postDeleted = await DeleteOrderDet(idDetail);
     res.status(204).send();
   } catch (error) {
     console.log("error", error);
