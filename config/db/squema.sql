@@ -110,10 +110,6 @@ CREATE TABLE tbl_pedidos (
 	id_pedido SERIAL PRIMARY KEY NOT NULL,
 	usuario_id integer,
 	numero_pedido varchar(200),
-	observaciones varchar(200),
-	neto numeric,
-	iva numeric, 
-	total numeric,
 	estado varchar(100),
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -131,11 +127,8 @@ CREATE TABLE tbl_pedidos_detalle (
 	id_detalle SERIAL PRIMARY KEY NOT NULL,
 	pedido_id integer,
 	producto_id integer,
-	SKU varchar(200),
 	cantidad integer,
-	neto numeric,
-	iva numeric,
-	total numeric,
+	precio_referencia numeric
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 CONSTRAINT fk_pedido_id
