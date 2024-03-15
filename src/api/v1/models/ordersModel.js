@@ -20,7 +20,8 @@ const byOrderNumber = async (orderNumber) => {
   try {
     const orderNumberQuery =
       "SELECT * FROM tbl_pedidos WHERE numero_pedido = $1";
-    const response = await pool.query(orderNumberQuery, orderNumber);
+      const queryParams = [orderNumber];
+    const response = await pool.query(orderNumberQuery, queryParams);
     return response.rows[0];
   } catch (error) {
     console.log(error);

@@ -53,7 +53,8 @@ const byOrderDetailId = async (orderId) => {
   try {
     const inDetailQuery =
       "SELECT * FROM tbl_pedidos_detalle WHERE id_detalle = $1";
-    const response = await pool.query(inDetailQuery, orderId);
+      const values = [orderId];
+    const response = await pool.query(inDetailQuery, values);
     if (response.rows.length > 0) {
       return response.rows[0];
     } else {
