@@ -2,28 +2,12 @@ import pool from "../../../../config/db/conectionDb.js";
 import format from "pg-format";
 
 //Pedido mayor o general, que contiene los detalles
-const TotalOrderRegister = async (
-  idUser,
-  orderNumber,
-  notes,
-  priceWithoutTaxes,
-  taxes,
-  priceWithTaxes,
-  status
-) => {
+const TotalOrderRegister = async (idUser, orderNumber, status) => {
   try {
     // Validar si el Producto ya existe en la BD
-    const orderValues = [
-      idUser,
-      orderNumber,
-      notes,
-      priceWithoutTaxes,
-      taxes,
-      priceWithTaxes,
-      status,
-    ];
+    const orderValues = [idUser, orderNumber, status];
     const orderQuery =
-      "INSERT INTO tbl_pedidos (id_pedido,usuario_id,numero_pedido,observaciones,neto,iva,total,estado) values (DEFAULT, $1, $2, $3, $4, $5, $6, $7) RETURNING *";
+      "INSERT INTO tbl_pedidos (id_pedido,usuario_id,numero_pedido,estado) values (DEFAULT, $1, $2, $3) RETURNING *";
     const response = await pool.query(orderQuery, orderValues);
 
     return response.rows[0];

@@ -19,7 +19,7 @@ const stockActionInterpreter = (base, payload, action) => {
 };
 
 const statusOrderInterpreter = (status, action) => {
-  statusArray = ["unavailable", "available", "purchased", "shipped"];
+  statusArray = ["unavailable", "available", "unpaid", "purchased"];
   let actualStatusIndex;
   try {
     actualStatusIndex = statusArray.findIndex((item) => item === status);
@@ -35,7 +35,7 @@ const statusOrderInterpreter = (status, action) => {
         return statusArray[actualStatusIndex + 1];
       } else {
         throw new Error(
-          "Cannot proceed from 'shipped' status, it's the final step"
+          "Cannot proceed from 'purchased' status, it's the final step"
         );
       }
     case "cancel":

@@ -44,7 +44,7 @@ const UpdateUser = async (userId, name, email, password, imageAvatar) => {
 const byEmail = async (email, authSource) => {
   try {
     if (authSource == false) {
-      const byEmailQuery = "SELECT * FROM tbl_usuarios WHERE email = $1";
+      const byEmailQuery = "SELECT * FROM tbl_usuarios WHERE id_usuario = $1";
       const response = await pool.query(byEmailQuery, email);
       return response.rows[0];
     } else {
@@ -59,13 +59,4 @@ const byEmail = async (email, authSource) => {
   }
 };
 
-const userBySKU = async (SKU, bySKUQuery) => {
-  try {
-    const response = await pool.query(bySKUQuery, SKU);
-    return response.rows[0];
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export { UserRegister, byEmail, userBySKU };
+export { UserRegister, byEmail, UpdateUser };

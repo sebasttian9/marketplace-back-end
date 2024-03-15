@@ -1,3 +1,4 @@
+//DEPRECATE - MUST BE UPDATED IN ORDER TO BE USEFUL
 import { userBySKU } from "../models/usersModel.js";
 //TO DO: Tiene que tener un isLogin previo
 const isTheSameAuthor = async (req, res, next) => {

@@ -5,31 +5,25 @@ import {
   UpdateOrderStatus,
   DeleteOrder,
 } from "../models/ordersModel.js";
-import { byEmail } from "../models/usersModel.js";
-import { getTax, statusOrderInterpreter } from "../utils/utils.js";
+import { statusOrderInterpreter } from "../utils/utils.js";
 
 const postNewTotalOrderMiddleware = async (req, res, next) => {
   try {
-    const { notes, price } = req.body;
-    const { priceWithoutTaxes, taxes, priceWithTaxes } = getTax(price);
-
-    //Deberíamos tener el token presente dejado por un middleware previo
-    const { email } = req.user;
-    const { id_usuario } = await byEmail(email, false);
-    //Ocupemos el mail para el SKU
-    const orderNumber = getSKU(email);
-    //Obtener status
-    const status = statusActionInterpreter("unavailable", "proceed");
-    const newTotalOrder = await TotalOrderRegister(
-      id_usuario,
-      orderNumber,
-      notes,
-      priceWithoutTaxes,
-      taxes,
-      priceWithTaxes,
-      status
-    );
-    req.TotalOrder = newTotalOrder;
+    if (!req.TotalOrder || req.TotalOrder["estado"] == "unavailable") {
+      //Deberíamos tener el token presente dejado por un middleware previo
+      const { id_usuario } = req.user;
+      //Ocupemos ORDER para el SKU
+      const orderNumber = getSKU("ORDER");
+      //Obtener status
+      const status = statusActionInterpreter("unavailable", "proceed");
+      const newTotalOrder = await TotalOrderRegister(
+        id_usuario,
+        orderNumber,
+        status
+      );
+      req.TotalOrder = newTotalOrder;
+      next();
+    }
     next();
     //El resto de la lógica será en los Detalles
   } catch (error) {
@@ -42,16 +36,13 @@ const getTotalOrderByUserId = async (req, res) => {
   try {
     //Deberíamos tener el token presente dejado por un middleware previo
     //Deberia ser el autor de la compra
-    const { email } = req.user;
-    const { id_usuario } = await byEmail(email, false);
+    const { id_usuario } = req.user;
     const allUsersOrders = await byUserID(id_usuario);
     res.status(200).json(allUsersOrders);
   } catch (error) {
     console.log("error", error);
   }
 };
-
-//TO DO: Falta el controlador para obtener los elementos por detalle, ¿se hará toda la lógica con SQL?
 
 //TO DO: Que los productos indiquen con un icono o color su estado
 const updateOrderStatus = async (req, res) => {
