@@ -22,9 +22,8 @@ const createUsers = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const { email } = req.user;
-    // console.log(req.user)
-    const findUser = await byEmail(email, "normal");
+    const { id_usuario } = req.user;
+    const findUser = await byEmail(id_usuario, false);
     console.log(findUser);
     res.status(200).json({ user: findUser });
   } catch (error) {
@@ -55,7 +54,7 @@ const login = async (req, res) => {
           .json({ message: errorFound[0].message });
       } else {
         const { email, nombre, id_usuario } = findUser;
-        const token = jwt.sign({ email,id_usuario }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ email, id_usuario }, process.env.JWT_SECRET, {
           expiresIn: "1h",
         });
         res.status(200).json({
@@ -90,7 +89,7 @@ const loginGoogle = async (req, res) => {
 
     // Check if the user exists in your database
     let user = await byEmail(email, "google");
-    let token = '';
+    let token = "";
     if (!user) {
       // Create a user if they do not exist
       const newUser = await UserRegister(
@@ -102,23 +101,27 @@ const loginGoogle = async (req, res) => {
       );
 
       let id_usuario2 = newUser.id_usuario;
-          // se crea el token de acceso
-     token = jwt.sign({ email,"id_usuario":id_usuario2 }, process.env.JWT_SECRET, {
-      expiresIn: "2h",
-    });
-
-    }else{
-
+      // se crea el token de acceso
+      token = jwt.sign(
+        { email, id_usuario: id_usuario2 },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "2h",
+        }
+      );
+    } else {
       let id_usuario1 = user.id_usuario;
-                // se crea el token de acceso
-     token = jwt.sign({ email,"id_usuario":id_usuario1 }, process.env.JWT_SECRET, {
-      expiresIn: "2h",
-    });
+      // se crea el token de acceso
+      token = jwt.sign(
+        { email, id_usuario: id_usuario1 },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "2h",
+        }
+      );
     }
 
-
-
-    res.status(200).json({ payload, "token": token });
+    res.status(200).json({ payload, token: token });
     // res.status(200).cookie("token", token, { http: true }).json({ payload });
   } catch (err) {
     console.log(err);
@@ -126,9 +129,35 @@ const loginGoogle = async (req, res) => {
   }
 };
 
-/*Falta el de cambio de datos de Usuario, estará dificil ya que se tiene que comparar los datos 
-originales con el input para ver si hubo cambios, y en los que hubo, 
-se agrega el nuevo, en los que no, se coloca la misma info que los originales.
-Con a contraseña habria que utilizar `bcrypt.compare()`*/
-
-export { login, createUsers, getUser, loginGoogle };
+const updateUser = async (req, res) => {
+  try {
+    const { id_usuario } = req.user;
+    const { email, password: inputPassword, nombre, imagen } = req.body;
+    const findUser = await byEmail(id_usuario, false);
+    //Comparar contraseñas
+    if (inputPassword == findUser.password) {
+      const updatedUser = await UpdateUser(
+        id_usuario,
+        nombre,
+        email,
+        inputPassword,
+        imagen
+      );
+      res.status(201).json(updatedUser);
+    } else {
+      const encryptPassword = bcrypt.hashSync(inputPassword);
+      const updatedUser = await UpdateUser(
+        id_usuario,
+        nombre,
+        email,
+        encryptPassword,
+        imagen
+      );
+      res.status(201).json(updatedUser);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+export { login, createUsers, getUser, loginGoogle, updateUser };
