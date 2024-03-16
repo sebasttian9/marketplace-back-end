@@ -33,7 +33,7 @@ const byUserID = async (idUser) => {
     const idUserQuery = "SELECT * FROM tbl_pedidos WHERE usuario_id = $1";
     const queryParams = [idUser];
     const response = await pool.query(idUserQuery, queryParams);
-    return response.rows[0];
+    return response.rows;
   } catch (error) {
     console.log(error);
   }

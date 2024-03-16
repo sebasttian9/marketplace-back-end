@@ -4,6 +4,7 @@ import {
   UpdateEntireProduct,
   DeleteProduct,
   getProducts,
+  getPostById
 } from "../models/productsModel.js";
 import { getSKU } from "../utils/utils.js";
 import prepareHateoas from "../helpers/hateoas.js";
@@ -64,6 +65,25 @@ const getProductBySKU = async (req, res) => {
   }
 };
 
+const getPostByIdUser = async (req, res) => {
+  try {
+    const { id_usuario } = req.user;
+    const ProductFoundByID = await getPostById(id_usuario);
+    if(!ProductFoundByID){
+      res.status(404).json({ "message" :"No Hay publicaciones creadas!" });
+      return;  
+    }
+
+    
+    res.status(200).json({"myPosts":ProductFoundByID});
+    
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+
+
 const updateProduct = async (req, res) => {
   try {
     const { SKU } = req.params;
@@ -99,4 +119,5 @@ export {
   getProductBySKU,
   updateProduct,
   deleteProductBySku,
+  getPostByIdUser
 };

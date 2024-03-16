@@ -27,7 +27,7 @@ const byTotalOrderNumberInDetail = async (totalOrderNumber) => {
       "SELECT * FROM tbl_pedidos_detalle WHERE pedido_id = $1";
       const detailsValues = [totalOrderNumber];
     const response = await pool.query(TotalOrderNumberQuery, detailsValues);
-    return response.rows[0];
+    return response.rows;
   } catch (error) {
     console.log(error);
   }

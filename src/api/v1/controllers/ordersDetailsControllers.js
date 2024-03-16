@@ -42,7 +42,7 @@ const getAllOrderDetailsByOrderID = async (req, res) => {
   try {
     const { orderId } = req.params;
     const allOrderDetails = await byTotalOrderNumberInDetail(orderId);
-    res.status(200).json(allOrderDetails);
+    res.status(200).json({"detalle":allOrderDetails});
   } catch (error) {
     console.log("error", error);
   }

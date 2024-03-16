@@ -15,7 +15,7 @@ const postNewTotalOrderMiddleware = async (req, res, next) => {
       //Ocupemos ORDER para el SKU
       const orderNumber = getSKU("ORDER");
       //Obtener status
-      const status = statusActionInterpreter("unavailable", "proceed");
+      const status = statusOrderInterpreter("unavailable", "proceed");
       const newTotalOrder = await TotalOrderRegister(
         id_usuario,
         orderNumber,
@@ -38,7 +38,7 @@ const getTotalOrderByUserId = async (req, res) => {
     //Deberia ser el autor de la compra
     const { id_usuario } = req.user;
     const allUsersOrders = await byUserID(id_usuario);
-    res.status(200).json(allUsersOrders);
+    res.status(200).json({"orders":allUsersOrders});
   } catch (error) {
     console.log("error", error);
   }

@@ -57,6 +57,18 @@ const bySKU = async (SKU) => {
   }
 };
 
+const getPostById = async (id) => {
+  try {
+    const SKUQuery = "SELECT * FROM tbl_productos WHERE usuario_id = $1";
+    const productValues = [id];
+    const response = await pool.query(SKUQuery, productValues);
+    return response.rows;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
 const UpdateEntireProduct = async (
   SKU,
   brand,
@@ -120,4 +132,5 @@ export {
   DeleteProduct,
   getProducts,
   UpdateEntireProduct,
+  getPostById
 };
