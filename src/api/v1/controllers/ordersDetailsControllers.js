@@ -12,10 +12,13 @@ const postSingleOrderDetail = async (req, res) => {
   try {
     const { id_pedido } = req.TotalOrder;
     //Necesitamos que venga ya el id del producto, puede ser que se haya parseado en forma de ${}
-    const { id_producto, price, quantity, action } = req.body;
+    const { id_producto, price, quantity, action, sku } = req.body;
     //Chequear si existe
     const existentDetail = await byProductIdInDetail(id_producto, id_pedido);
     //Si no existe, crear
+    console.log(existentDetail)
+    let status = 201;
+    let respuestaFinal;
     if (!existentDetail) {
       let base = 0;
       const stock = stockActionInterpreter(base, quantity, action);
@@ -23,16 +26,21 @@ const postSingleOrderDetail = async (req, res) => {
         id_pedido,
         id_producto,
         stock,
-        price
+        price,
+        sku
       );
-      res.status(201).json(newDetail);
-    } //Si existe, hacer update al stock
-    else {
+      respuestaFinal = newDetail;
+      // console.log(newDetail)
+      // res.status(201).json(newDetail);
+    }else { //Si existe, hacer update al stock
+      console.log('entro en update')
       const { cantidad, id_detalle } = existentDetail;
       const stock = stockActionInterpreter(cantidad, quantity, action);
       const updatedDetail = await UpdateOrderDetailQuantity(id_detalle, stock);
-      res.status(200).json(updatedDetail);
+      status = 200;
+      respuestaFinal = updatedDetail;
     }
+    res.status(status).json(respuestaFinal);
   } catch (error) {
     throw new Error(error);
   }

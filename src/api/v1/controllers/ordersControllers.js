@@ -5,7 +5,7 @@ import {
   UpdateOrderStatus,
   DeleteOrder,
 } from "../models/ordersModel.js";
-import { statusOrderInterpreter } from "../utils/utils.js";
+import { statusOrderInterpreter,getSKU } from "../utils/utils.js";
 
 const postNewTotalOrderMiddleware = async (req, res, next) => {
   try {
@@ -22,7 +22,6 @@ const postNewTotalOrderMiddleware = async (req, res, next) => {
         status
       );
       req.TotalOrder = newTotalOrder;
-      next();
     }
     next();
     //El resto de la lógica será en los Detalles
