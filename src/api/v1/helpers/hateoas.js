@@ -2,6 +2,7 @@ const prepareHateoas = async (entity, data) => {
   let total_general = 0;
   const results = data.map((v) => {
     const hateoasObject = {
+      id_producto: v.id_producto,
       nombre: v.nombre,
       SKU: v.sku,
       detalle: v.descripcion,
