@@ -30,7 +30,7 @@ const byOrderNumber = async (orderNumber) => {
 
 const byUserID = async (idUser) => {
   try {
-    const idUserQuery = "SELECT * FROM tbl_pedidos WHERE usuario_id = $1";
+    const idUserQuery = "SELECT * FROM tbl_pedidos WHERE usuario_id = $1 order by created_at desc";
     const queryParams = [idUser];
     const response = await pool.query(idUserQuery, queryParams);
     return response.rows;
