@@ -10,13 +10,21 @@ import { stockActionInterpreter } from "../utils/utils.js";
 
 const postSingleOrderDetail = async (req, res) => {
   try {
-    console.log("apple", res.locals.TotalOrder);
-    const { id_pedido } = res.locals.TotalOrder;
+    let idPedidoFinal;
+    if (!req.body.id_pedido) {
+      const { id_pedido } = res.locals.TotalOrder;
+      idPedidoFinal = id_pedido;
+    } else {
+      idPedidoFinal = req.body.id_pedido;
+    }
     //Necesitamos que venga ya el id del producto, puede ser que se haya parseado en forma de ${}
     const { id_producto, price, quantity, action } = req.body;
     console.log("uva", id_producto, price, quantity, action);
     //Chequear si existe
-    const existentDetail = await byProductIdInDetail(id_producto, id_pedido);
+    const existentDetail = await byProductIdInDetail(
+      id_producto,
+      idPedidoFinal
+    );
     //Si no existe, crear
     console.log("pera", existentDetail);
     let status = 201;

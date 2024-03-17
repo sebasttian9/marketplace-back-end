@@ -9,11 +9,8 @@ import { statusOrderInterpreter, getSKU } from "../utils/utils.js";
 
 const postNewTotalOrderMiddleware = async (req, res, next) => {
   try {
-    if (
-      !res.locals.TotalOrder ||
-      res.locals.TotalOrder["estado"] == "unavailable"
-    ) {
-      console.log(res.locals.TotalOrder);
+    if (!req.body.id_pedido) {
+      console.log(req.body);
       //Deberíamos tener el token presente dejado por un middleware previo
       const { id_usuario } = req.user;
       //Ocupemos ORDER para el SKU
