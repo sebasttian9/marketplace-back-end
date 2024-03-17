@@ -5,7 +5,7 @@ import {
   UpdateOrderStatus,
   DeleteOrder,
 } from "../models/ordersModel.js";
-import { statusOrderInterpreter } from "../utils/utils.js";
+import { statusOrderInterpreter,getSKU } from "../utils/utils.js";
 
 const postNewTotalOrderMiddleware = async (req, res, next) => {
   try {
@@ -15,14 +15,13 @@ const postNewTotalOrderMiddleware = async (req, res, next) => {
       //Ocupemos ORDER para el SKU
       const orderNumber = getSKU("ORDER");
       //Obtener status
-      const status = statusActionInterpreter("unavailable", "proceed");
+      const status = statusOrderInterpreter("unavailable", "proceed");
       const newTotalOrder = await TotalOrderRegister(
         id_usuario,
         orderNumber,
         status
       );
       req.TotalOrder = newTotalOrder;
-      next();
     }
     next();
     //El resto de la lógica será en los Detalles
@@ -38,7 +37,7 @@ const getTotalOrderByUserId = async (req, res) => {
     //Deberia ser el autor de la compra
     const { id_usuario } = req.user;
     const allUsersOrders = await byUserID(id_usuario);
-    res.status(200).json(allUsersOrders);
+    res.status(200).json({"orders":allUsersOrders});
   } catch (error) {
     console.log("error", error);
   }

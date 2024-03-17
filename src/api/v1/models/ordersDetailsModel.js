@@ -6,13 +6,14 @@ const DetailOrderRegister = async (
   idOrder,
   idProduct,
   productQuantity,
-  price
+  price,
+  sku
 ) => {
   try {
     // Validar si el Producto ya existe en la BD
-    const singleOrderValues = [idOrder, idProduct, productQuantity, price];
+    const singleOrderValues = [idOrder, idProduct, productQuantity, price,sku];
     const singleOrderQuery =
-      "INSERT INTO tbl_pedidos_detalle (id_detalle,pedido_id,producto_id,SKU,cantidad,precio_referencia) values (DEFAULT, $1, $2, $3, $4) RETURNING *";
+      "INSERT INTO tbl_pedidos_detalle (id_detalle,pedido_id,producto_id,cantidad,neto,SKU) values (DEFAULT, $1, $2, $3, $4, $5) RETURNING *";
     const response = await pool.query(singleOrderQuery, singleOrderValues);
 
     return response.rows[0];
@@ -25,8 +26,9 @@ const byTotalOrderNumberInDetail = async (totalOrderNumber) => {
   try {
     const TotalOrderNumberQuery =
       "SELECT * FROM tbl_pedidos_detalle WHERE pedido_id = $1";
-    const response = await pool.query(TotalOrderNumberQuery, totalOrderNumber);
-    return response.rows[0];
+      const detailsValues = [totalOrderNumber];
+    const response = await pool.query(TotalOrderNumberQuery, detailsValues);
+    return response.rows;
   } catch (error) {
     console.log(error);
   }
@@ -52,7 +54,8 @@ const byOrderDetailId = async (orderId) => {
   try {
     const inDetailQuery =
       "SELECT * FROM tbl_pedidos_detalle WHERE id_detalle = $1";
-    const response = await pool.query(inDetailQuery, orderId);
+      const values = [orderId];
+    const response = await pool.query(inDetailQuery, values);
     if (response.rows.length > 0) {
       return response.rows[0];
     } else {
@@ -77,12 +80,13 @@ const UpdateOrderDetailQuantity = async (orderId, quantity) => {
   }
 };
 
-const DeleteOrderDetail = async (orderId) => {
+const DeleteOrderDet = async (orderId) => {
   //Requiere una autorización previa en Controlador
   try {
     const deleteOrderDetailQuery =
       "DELETE FROM tbl_pedidos_detalle WHERE id_detalle = $1";
-    const response = await pool.query(deleteOrderDetailQuery, orderId);
+      const values = [orderId];
+    const response = await pool.query(deleteOrderDetailQuery, values);
     return response.rows[0];
   } catch (error) {
     console.log(error);
@@ -95,5 +99,5 @@ export {
   byTotalOrderNumberInDetail,
   byOrderDetailId,
   UpdateOrderDetailQuantity,
-  DeleteOrderDetail,
+  DeleteOrderDet,
 };

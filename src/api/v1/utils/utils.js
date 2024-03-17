@@ -19,7 +19,7 @@ const stockActionInterpreter = (base, payload, action) => {
 };
 
 const statusOrderInterpreter = (status, action) => {
-  statusArray = ["unavailable", "available", "unpaid", "purchased"];
+  const statusArray = ["unavailable", "available", "unpaid", "purchased"];
   let actualStatusIndex;
   try {
     actualStatusIndex = statusArray.findIndex((item) => item === status);
