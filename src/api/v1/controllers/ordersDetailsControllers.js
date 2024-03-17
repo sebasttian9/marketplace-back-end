@@ -4,19 +4,21 @@ import {
   byProductIdInDetail,
   byOrderDetailId,
   UpdateOrderDetailQuantity,
-  DeleteOrderDet
+  DeleteOrderDet,
 } from "../models/ordersDetailsModel.js";
 import { stockActionInterpreter } from "../utils/utils.js";
 
 const postSingleOrderDetail = async (req, res) => {
   try {
-    const { id_pedido } = req.TotalOrder;
+    console.log("apple", res.locals.TotalOrder);
+    const { id_pedido } = res.locals.TotalOrder;
     //Necesitamos que venga ya el id del producto, puede ser que se haya parseado en forma de ${}
-    const { id_producto, price, quantity, action, sku } = req.body;
+    const { id_producto, price, quantity, action } = req.body;
+    console.log("uva", id_producto, price, quantity, action);
     //Chequear si existe
     const existentDetail = await byProductIdInDetail(id_producto, id_pedido);
     //Si no existe, crear
-    console.log(existentDetail)
+    console.log("pera", existentDetail);
     let status = 201;
     let respuestaFinal;
     if (!existentDetail) {
@@ -26,20 +28,21 @@ const postSingleOrderDetail = async (req, res) => {
         id_pedido,
         id_producto,
         stock,
-        price,
-        sku
+        price
       );
       respuestaFinal = newDetail;
       // console.log(newDetail)
       // res.status(201).json(newDetail);
-    }else { //Si existe, hacer update al stock
-      console.log('entro en update')
+    } else {
+      //Si existe, hacer update al stock
+      console.log("entro en update");
       const { cantidad, id_detalle } = existentDetail;
       const stock = stockActionInterpreter(cantidad, quantity, action);
       const updatedDetail = await UpdateOrderDetailQuantity(id_detalle, stock);
       status = 200;
       respuestaFinal = updatedDetail;
     }
+    respuestaFinal.cartId = id_pedido;
     res.status(status).json(respuestaFinal);
   } catch (error) {
     throw new Error(error);
@@ -48,9 +51,10 @@ const postSingleOrderDetail = async (req, res) => {
 
 const getAllOrderDetailsByOrderID = async (req, res) => {
   try {
-    const { orderId } = req.params;
+    console.log(res.locals.TotalOrder);
+    const { orderId } = res.locals.TotalOrder;
     const allOrderDetails = await byTotalOrderNumberInDetail(orderId);
-    res.status(200).json({"detalle":allOrderDetails});
+    res.status(200).json({ detalle: allOrderDetails });
   } catch (error) {
     console.log("error", error);
   }
