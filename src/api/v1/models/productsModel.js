@@ -10,13 +10,24 @@ const ProductRegister = async (
   price,
   stock,
   state,
-  id_usuario
+  id_usuario,
+  imagen
 ) => {
   try {
     // Validar si el Producto ya existe en la BD
-    const productValues = [SKU, brand, title, description, price, stock, state,id_usuario];
+    const productValues = [
+      SKU,
+      brand,
+      title,
+      description,
+      price,
+      stock,
+      state,
+      id_usuario,
+      imagen,
+    ];
     const productQuery =
-      "INSERT INTO tbl_productos (id_producto,SKU,marca_producto,nombre,descripcion,precio_lista,stock,usado,usuario_id) values (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8) RETURNING *";
+      "INSERT INTO tbl_productos (id_producto,SKU,marca_producto,nombre,descripcion,precio_lista,stock,usado,usuario_id,imagen_url) values (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8,$9) RETURNING *";
     const response = await pool.query(productQuery, productValues);
 
     return response.rows[0];

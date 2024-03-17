@@ -15,7 +15,7 @@ const getAllProductsLimits = async (req, res) => {
   try {
     const { order_by, page, limits } = req.query;
     const products = await getProducts(order_by, limits, page);
-    const productsWithHateoas = await prepareHateoas("products", products);
+    const productsWithHateoas = await prepareHateoas(products);
     res.status(200).json(productsWithHateoas);
   } catch (error) {
     console.log("error", error);
@@ -24,8 +24,8 @@ const getAllProductsLimits = async (req, res) => {
 
 const postNewProduct = async (req, res) => {
   try {
-
     const { id_usuario } = req.user;
+    const imageLink = res.locals.accessUrl;
     const { brand, title, description, price, stock, state } = req.body;
     const SKU = getSKU(title);
     const newProduct = await ProductRegister(
@@ -36,11 +36,9 @@ const postNewProduct = async (req, res) => {
       price,
       stock,
       state,
-      id_usuario
+      id_usuario,
+      imageLink
     );
-    // Pasar el objeto newProduct al siguiente controlador
-    // req.newProduct = newProduct;
-    // next(); // Llama al siguiente middleware o controlador
     res.status(201).json({ product: newProduct });
   } catch (error) {
     console.log("error", error);
@@ -52,14 +50,12 @@ const getProductBySKU = async (req, res) => {
   try {
     const { sku } = req.params;
     const ProductFoundByID = await bySKU(sku);
-    if(!ProductFoundByID){
-      res.status(404).json({ "message" :" No existe el Producto!" });
-      return;  
+    if (!ProductFoundByID) {
+      res.status(404).json({ message: " No existe el Producto!" });
+      return;
     }
 
-    
     res.status(200).json(ProductFoundByID);
-    
   } catch (error) {
     console.log("error", error);
   }

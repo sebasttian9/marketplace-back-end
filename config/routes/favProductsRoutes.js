@@ -10,6 +10,6 @@ const router = express.Router();
 
 router.get("/user/myfavsproducts", isLogin, getFavProductsByUser);
 router.post("/user/myfavsproducts", isLogin, postNewFavProd);
-router.delete("/user/myfavsproducts/:id",isLogin, deleteFavProduct);
+router.delete("/user/myfavsproducts/:id", isLogin, deleteFavProduct);
 
 export default router;
