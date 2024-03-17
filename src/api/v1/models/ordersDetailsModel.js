@@ -11,7 +11,7 @@ const DetailOrderRegister = async (
 ) => {
   try {
     // Validar si el Producto ya existe en la BD
-    const singleOrderValues = [idOrder, idProduct, productQuantity, price,sku];
+    const singleOrderValues = [idOrder, idProduct, productQuantity, price, sku];
     const singleOrderQuery =
       "INSERT INTO tbl_pedidos_detalle (id_detalle,pedido_id,producto_id,cantidad,neto,SKU) values (DEFAULT, $1, $2, $3, $4, $5) RETURNING *";
     const response = await pool.query(singleOrderQuery, singleOrderValues);
@@ -25,8 +25,8 @@ const DetailOrderRegister = async (
 const byTotalOrderNumberInDetail = async (totalOrderNumber) => {
   try {
     const TotalOrderNumberQuery =
-      "SELECT * FROM tbl_pedidos_detalle WHERE pedido_id = $1";
-      const detailsValues = [totalOrderNumber];
+      "SELECT pd.id_detalle, pd.pedido_id, pd.producto_id, pd.cantidad, pd.precio_referencia, p.marca_producto, p.nombre AS nombre_producto, p.descripcion AS descripcion_producto, p.imagen_url AS imagen_producto FROM tbl_pedidos_detalle pd JOIN tbl_productos p ON pd.producto_id = p.id_producto WHERE pd.pedido_id = $1";
+    const detailsValues = [totalOrderNumber];
     const response = await pool.query(TotalOrderNumberQuery, detailsValues);
     return response.rows;
   } catch (error) {
@@ -54,7 +54,7 @@ const byOrderDetailId = async (orderId) => {
   try {
     const inDetailQuery =
       "SELECT * FROM tbl_pedidos_detalle WHERE id_detalle = $1";
-      const values = [orderId];
+    const values = [orderId];
     const response = await pool.query(inDetailQuery, values);
     if (response.rows.length > 0) {
       return response.rows[0];
@@ -85,7 +85,7 @@ const DeleteOrderDet = async (orderId) => {
   try {
     const deleteOrderDetailQuery =
       "DELETE FROM tbl_pedidos_detalle WHERE id_detalle = $1";
-      const values = [orderId];
+    const values = [orderId];
     const response = await pool.query(deleteOrderDetailQuery, values);
     return response.rows[0];
   } catch (error) {
