@@ -75,7 +75,11 @@ const deleteOrderDetail = async (req, res) => {
   try {
     const { idDetail } = req.params;
     const postDeleted = await DeleteOrderDet(idDetail);
-    res.status(204).send();
+    if(postDeleted.rowCount){
+      res.status(200).json({"message":"Detalle de Orden Eliminada"});
+    }else{
+      res.status(200).json({"message":"No se pudo eliminar el detalle de la Orden"});
+    }
   } catch (error) {
     console.log("error", error);
     res.status(500).json({ error: "Internal server error" });

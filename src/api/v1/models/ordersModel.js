@@ -57,7 +57,7 @@ const DeleteOrder = async (orderNumber) => {
     const deleteOrderQuery = "DELETE FROM tbl_pedidos WHERE numero_pedido = $1";
     const values = [orderNumber];
     const response = await pool.query(deleteOrderQuery, values);
-    return response.rows[0];
+    return response;
   } catch (error) {
     console.log(error);
   }

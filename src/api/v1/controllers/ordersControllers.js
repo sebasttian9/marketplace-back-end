@@ -62,7 +62,11 @@ const deleteOrder = async (req, res) => {
   try {
     const { orderNumber } = req.params;
     const postDeleted = await DeleteOrder(orderNumber);
-    res.status(204).send();
+    if(postDeleted.rowCount){
+      res.status(200).json({"message":"Orden Eliminada"});
+    }else{
+      res.status(200).json({"message":"No se pudo eliminar la Orden"});
+    }
   } catch (error) {
     console.log("error", error);
     res.status(500).json({ error: "Internal server error" });
