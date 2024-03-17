@@ -6,14 +6,13 @@ const DetailOrderRegister = async (
   idOrder,
   idProduct,
   productQuantity,
-  price,
-  sku
+  price
 ) => {
   try {
     // Validar si el Producto ya existe en la BD
-    const singleOrderValues = [idOrder, idProduct, productQuantity, price, sku];
+    const singleOrderValues = [idOrder, idProduct, productQuantity, price];
     const singleOrderQuery =
-      "INSERT INTO tbl_pedidos_detalle (id_detalle,pedido_id,producto_id,cantidad,neto,SKU) values (DEFAULT, $1, $2, $3, $4, $5) RETURNING *";
+      "INSERT INTO tbl_pedidos_detalle (id_detalle,pedido_id,producto_id,cantidad,neto) values (DEFAULT, $1, $2, $3, $4) RETURNING *";
     const response = await pool.query(singleOrderQuery, singleOrderValues);
 
     return response.rows[0];

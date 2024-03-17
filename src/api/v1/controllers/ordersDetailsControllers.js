@@ -12,7 +12,7 @@ const postSingleOrderDetail = async (req, res) => {
   try {
     const { id_pedido } = req.TotalOrder;
     //Necesitamos que venga ya el id del producto, puede ser que se haya parseado en forma de ${}
-    const { id_producto, price, quantity, action, sku } = req.body;
+    const { id_producto, price, quantity, action } = req.body;
     //Chequear si existe
     const existentDetail = await byProductIdInDetail(id_producto, id_pedido);
     //Si no existe, crear
@@ -26,8 +26,7 @@ const postSingleOrderDetail = async (req, res) => {
         id_pedido,
         id_producto,
         stock,
-        price,
-        sku
+        price
       );
       respuestaFinal = newDetail;
       // console.log(newDetail)
