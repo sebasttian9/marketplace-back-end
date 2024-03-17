@@ -33,7 +33,7 @@ const postSingleOrderDetail = async (req, res) => {
       // console.log(newDetail)
       // res.status(201).json(newDetail);
     }else { //Si existe, hacer update al stock
-      console.log('entro en update')
+      // console.log('entro en update')
       const { cantidad, id_detalle } = existentDetail;
       const stock = stockActionInterpreter(cantidad, quantity, action);
       const updatedDetail = await UpdateOrderDetailQuantity(id_detalle, stock);

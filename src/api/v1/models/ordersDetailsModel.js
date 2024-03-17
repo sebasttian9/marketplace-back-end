@@ -25,7 +25,7 @@ const DetailOrderRegister = async (
 const byTotalOrderNumberInDetail = async (totalOrderNumber) => {
   try {
     const TotalOrderNumberQuery =
-      "SELECT pd.id_detalle, pd.pedido_id, pd.producto_id, pd.cantidad, pd.precio_referencia, p.marca_producto, p.nombre AS nombre_producto, p.descripcion AS descripcion_producto, p.imagen_url AS imagen_producto FROM tbl_pedidos_detalle pd JOIN tbl_productos p ON pd.producto_id = p.id_producto WHERE pd.pedido_id = $1";
+      "SELECT pd.id_detalle, pd.pedido_id, pd.producto_id, pd.cantidad, pd.neto, p.marca_producto, p.nombre AS nombre_producto, p.descripcion AS descripcion_producto, p.imagen_url AS imagen_producto FROM tbl_pedidos_detalle pd JOIN tbl_productos p ON pd.producto_id = p.id_producto WHERE pd.pedido_id = $1";
     const detailsValues = [totalOrderNumber];
     const response = await pool.query(TotalOrderNumberQuery, detailsValues);
     return response.rows;
