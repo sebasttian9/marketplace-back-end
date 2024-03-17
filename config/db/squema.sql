@@ -31,6 +31,7 @@ CREATE TABLE tbl_productos (
 	precio_lista integer, 
 	stock integer,
 	usado boolean,
+	imagen_url varchar(255),
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 		CONSTRAINT fk_usuario_prod
