@@ -44,8 +44,9 @@ const UpdateUser = async (userId, name, email, password, imageAvatar) => {
 const byEmail = async (email, authSource) => {
   try {
     if (authSource == false) {
+      const byEmailValues = [email];
       const byEmailQuery = "SELECT * FROM tbl_usuarios WHERE id_usuario = $1";
-      const response = await pool.query(byEmailQuery, email);
+      const response = await pool.query(byEmailQuery, byEmailValues);
       return response.rows[0];
     } else {
       const byEmailValues = [email, authSource];

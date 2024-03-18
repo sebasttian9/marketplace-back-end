@@ -20,7 +20,8 @@ const byProductIdInImages = async (idProduct) => {
   try {
     const imagesProductIdQuery =
       "SELECT * FROM tbl_imagenes WHERE producto_id = $1";
-    const response = await pool.query(imagesProductIdQuery, idProduct);
+      const imagesValues = [idProduct];
+    const response = await pool.query(imagesProductIdQuery, imagesValues);
     return response.rows[0];
   } catch (error) {
     console.log(error);
@@ -42,7 +43,8 @@ const DeleteImage = async (idProduct) => {
   //Requiere una autorización previa en Controlador
   try {
     const deleteImageQuery = "DELETE FROM tbl_imagenes WHERE producto_id = $1";
-    const response = await pool.query(deleteImageQuery, idProduct);
+    const imagesValues = [idProduct];
+    const response = await pool.query(deleteImageQuery, imagesValues);
     return response.rows[0];
   } catch (error) {
     console.log(error);

@@ -25,7 +25,12 @@ const getUser = async (req, res) => {
     const { id_usuario } = req.user;
     const findUser = await byEmail(id_usuario, false);
     console.log(findUser);
-    res.status(200).json({ user: findUser });
+    if(findUser){
+      res.status(200).json({ user: findUser });
+    }else{
+      res.status(400).json({});
+    }
+    
   } catch (error) {
     console.log(error);
     const errorFound = findError(error.code);
