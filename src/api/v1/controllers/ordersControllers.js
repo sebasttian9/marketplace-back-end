@@ -5,11 +5,13 @@ import {
   UpdateOrderStatus,
   DeleteOrder,
 } from "../models/ordersModel.js";
-import { statusOrderInterpreter,getSKU } from "../utils/utils.js";
+import { statusOrderInterpreter, getSKU } from "../utils/utils.js";
 
 const postNewTotalOrderMiddleware = async (req, res, next) => {
   try {
-    if (!req.TotalOrder || req.TotalOrder["estado"] == "unavailable") {
+    console.log("ENtrando al middleware", req.body);
+    if (!req.body.id_pedido) {
+      console.log(req.body);
       //Deberíamos tener el token presente dejado por un middleware previo
       const { id_usuario } = req.user;
       //Ocupemos ORDER para el SKU
@@ -21,7 +23,7 @@ const postNewTotalOrderMiddleware = async (req, res, next) => {
         orderNumber,
         status
       );
-      req.TotalOrder = newTotalOrder;
+      res.locals.TotalOrder = newTotalOrder;
     }
     next();
     //El resto de la lógica será en los Detalles
@@ -37,7 +39,7 @@ const getTotalOrderByUserId = async (req, res) => {
     //Deberia ser el autor de la compra
     const { id_usuario } = req.user;
     const allUsersOrders = await byUserID(id_usuario);
-    res.status(200).json({"orders":allUsersOrders});
+    res.status(200).json({ orders: allUsersOrders });
   } catch (error) {
     console.log("error", error);
   }
