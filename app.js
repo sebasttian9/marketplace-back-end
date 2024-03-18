@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-// import { logger } from "logger-express";
+import { logger } from "logger-express";
 import swagger from "./config/swagger/swagger.js";
 import usersRouter from './config/routes/usersRoutes.js';
 import productsRouter from './config/routes/productsRoutes.js';
@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cors());
 app.options("*", cors());
 
-// app.use(logger());
+app.use(logger());
 app.get("/", (req,res)=>{
   res.send('Api MARKETPLACE en linea');
 });
