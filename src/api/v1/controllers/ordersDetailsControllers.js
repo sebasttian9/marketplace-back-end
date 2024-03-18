@@ -21,7 +21,6 @@ const postSingleOrderDetail = async (req, res) => {
     }
     //Necesitamos que venga ya el id del producto, puede ser que se haya parseado en forma de ${}
     const { id_producto, price, quantity, action } = req.body;
-    console.log("uva", id_producto, price, quantity, action, idPedidoFinal);
     //Chequear si existe
     const existentDetail = await byProductIdInDetail(
       id_producto,
@@ -44,7 +43,6 @@ const postSingleOrderDetail = async (req, res) => {
       console.log("RespuestaFinal en caso que no existe el detalle", newDetail);
     } else {
       //Si existe, hacer update al stock
-      console.log("entro en update");
       const { cantidad, id_detalle } = existentDetail;
       const stock = stockActionInterpreter(cantidad, quantity, action);
       const updatedDetail = await UpdateOrderDetailQuantity(id_detalle, stock);
@@ -87,7 +85,11 @@ const deleteOrderDetail = async (req, res) => {
   try {
     const { idDetail } = req.params;
     const postDeleted = await DeleteOrderDet(idDetail);
-    res.status(204).send();
+    if(postDeleted.rowCount){
+      res.status(200).json({"message":"Detalle de Orden Eliminada"});
+    }else{
+      res.status(200).json({"message":"No se pudo eliminar el detalle de la Orden"});
+    }
   } catch (error) {
     console.log("error", error);
     res.status(500).json({ error: "Internal server error" });
