@@ -9,6 +9,7 @@ import { statusOrderInterpreter, getSKU } from "../utils/utils.js";
 
 const postNewTotalOrderMiddleware = async (req, res, next) => {
   try {
+    console.log("ENtrando al middleware", req.body);
     if (!req.body.id_pedido) {
       console.log(req.body);
       //Deberíamos tener el token presente dejado por un middleware previo

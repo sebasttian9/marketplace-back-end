@@ -12,14 +12,16 @@ const postSingleOrderDetail = async (req, res) => {
   try {
     let idPedidoFinal;
     if (!req.body.id_pedido) {
+      console.log("No tiene id", req.body, res.locals.TotalOrder);
       const { id_pedido } = res.locals.TotalOrder;
       idPedidoFinal = id_pedido;
     } else {
+      console.log("Sí tiene id", req.body);
       idPedidoFinal = req.body.id_pedido;
     }
     //Necesitamos que venga ya el id del producto, puede ser que se haya parseado en forma de ${}
     const { id_producto, price, quantity, action } = req.body;
-    console.log("uva", id_producto, price, quantity, action);
+    console.log("uva", id_producto, price, quantity, action, idPedidoFinal);
     //Chequear si existe
     const existentDetail = await byProductIdInDetail(
       id_producto,
@@ -33,14 +35,13 @@ const postSingleOrderDetail = async (req, res) => {
       let base = 0;
       const stock = stockActionInterpreter(base, quantity, action);
       const newDetail = await DetailOrderRegister(
-        id_pedido,
+        idPedidoFinal,
         id_producto,
         stock,
         price
       );
       respuestaFinal = newDetail;
-      // console.log(newDetail)
-      // res.status(201).json(newDetail);
+      console.log("RespuestaFinal en caso que no existe el detalle", newDetail);
     } else {
       //Si existe, hacer update al stock
       console.log("entro en update");
@@ -50,7 +51,7 @@ const postSingleOrderDetail = async (req, res) => {
       status = 200;
       respuestaFinal = updatedDetail;
     }
-    respuestaFinal.cartId = id_pedido;
+    respuestaFinal.cartId = idPedidoFinal;
     res.status(status).json(respuestaFinal);
   } catch (error) {
     throw new Error(error);
@@ -59,8 +60,7 @@ const postSingleOrderDetail = async (req, res) => {
 
 const getAllOrderDetailsByOrderID = async (req, res) => {
   try {
-    console.log(res.locals.TotalOrder);
-    const { orderId } = res.locals.TotalOrder;
+    const { orderId } = req.params;
     const allOrderDetails = await byTotalOrderNumberInDetail(orderId);
     res.status(200).json({ detalle: allOrderDetails });
   } catch (error) {
